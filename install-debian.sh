@@ -75,7 +75,7 @@ echo 'Following software will be installed on your system:'
     echo '   - PHP-FPM 7.3'
 
 # Printing start message and sleeping for 5 seconds
-echo -e "\n\n\n\nInstallation will take about 15 minutes ...\n"
+echo -e "\n\n\n\nInstallation will take about 10 minutes ...\n"
 sleep 5
 
 
@@ -140,7 +140,7 @@ sleep 5
 #----------------------------------------------------------#
 
     cp $ppminstall/php-fpm/ppm.conf /etc/php/7.3/fpm/pool.d/ppm.conf
-    chow root:root /etc/php/7.3/fpm/pool.d/ppm.conf
+    chown root:root /etc/php/7.3/fpm/pool.d/ppm.conf
     service php7.3-fpm start
     check_result $? "php-fpm start failed"
 
