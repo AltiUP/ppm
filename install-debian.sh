@@ -16,38 +16,38 @@ software="php7.3 php7.3-zip php7.3-xml php7.3-readline php7.3-opcache php7.3-mys
           apache2 git curl unzip sudo"
 
 
-# Defning return code check function
-check_result() {
-    if [ $1 -ne 0 ]; then
-        echo "Error: $2"
-        exit $1
-    fi
-}
+    # Defning return code check function
+    check_result() {
+        if [ $1 -ne 0 ]; then
+            echo "Error: $2"
+            exit $1
+        fi
+    }
 
 
 #----------------------------------------------------------#
 #                    Verifications                         #
 #----------------------------------------------------------#
 
-# Creating temporary file
-tmpfile=$(mktemp -p /tmp)
+    # Creating temporary file
+    tmpfile=$(mktemp -p /tmp)
 
-# Checking root permissions
-if [ "x$(id -u)" != 'x0' ]; then
-    check_error 1 "Script can be run executed only by root"
-fi
+    # Checking root permissions
+    if [ "x$(id -u)" != 'x0' ]; then
+        check_error 1 "Script can be run executed only by root"
+    fi
 
-# Checking admin user account
-if [ ! -z "$(grep ^ppm: /etc/passwd)" ] && [ -z "$force" ]; then
-    echo 'Please remove ppm user account before proceeding.'
-    check_result 1 "User ppm exists"
-fi
+    # Checking admin user account
+    if [ ! -z "$(grep ^ppm: /etc/passwd)" ] && [ -z "$force" ]; then
+        echo 'Please remove ppm user account before proceeding.'
+        check_result 1 "User ppm exists"
+    fi
 
-# Checking wget
-if [ ! -e '/usr/bin/wget' ]; then
-    apt-get -y install wget
-    check_result $? "Can't install wget"
-fi
+    # Checking wget
+    if [ ! -e '/usr/bin/wget' ]; then
+        apt-get -y install wget
+        check_result $? "Can't install wget"
+    fi
 
 
 #----------------------------------------------------------#
@@ -83,21 +83,21 @@ sleep 5
 #                   Upgrade repository                     #
 #----------------------------------------------------------#
 
-# Updating system
-apt-get -y upgrade
-check_result $? 'apt-get upgrade failed'
+    # Updating system
+    apt-get -y upgrade
+    check_result $? 'apt-get upgrade failed'
 
 
 #----------------------------------------------------------#
 #                     Install packages                     #
 #----------------------------------------------------------#
 
-# Update system packages
-apt-get update
+    # Update system packages
+    apt-get update
 
-# Install apt packages
-apt-get -y install $software
-check_result $? "apt-get install failed"
+    # Install apt packages
+    apt-get -y install $software
+    check_result $? "apt-get install failed"
 
 
 #----------------------------------------------------------#
@@ -147,14 +147,14 @@ check_result $? "apt-get install failed"
 #                     Configure PHP                        #
 #----------------------------------------------------------#
 
-ZONE=$(timedatectl 2>/dev/null|grep Timezone|awk '{print $2}')
-if [ -z "$ZONE" ]; then
-    ZONE='UTC'
-fi
-for pconf in $(find /etc/php* -name php.ini); do
-    sed -i "s/;date.timezone =/date.timezone = $ZONE/g" $pconf
-    sed -i 's%_open_tag = Off%_open_tag = On%g' $pconf
-done
+    ZONE=$(timedatectl 2>/dev/null|grep Timezone|awk '{print $2}')
+    if [ -z "$ZONE" ]; then
+        ZONE='UTC'
+    fi
+    for pconf in $(find /etc/php* -name php.ini); do
+        sed -i "s/;date.timezone =/date.timezone = $ZONE/g" $pconf
+        sed -i 's%_open_tag = Off%_open_tag = On%g' $pconf
+    done
 
 
 #----------------------------------------------------------#
@@ -183,6 +183,7 @@ done
     cd /opt/ppm
     sudo -u ppm composer install
     sudo -u ppm app/console doctrine:schema:create
+    sudo -u ppm app/console cache:clear --env=prod
 
     # Configuring Workers service
     cp $ppminstall/service/ppm-workers.service /etc/systemd/system/ppm-workers.service
@@ -200,6 +201,7 @@ done
 #----------------------------------------------------------#
 
 # Show notification
+echo '======================================================='
 echo -e "Congratulations, you have just successfully installed \
 Private Packages Manager
 
