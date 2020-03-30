@@ -80,7 +80,7 @@ env[PATH] = /usr/local/bin:/usr/bin:/bin
 
         # Log format config
         ErrorLog ${APACHE_LOG_DIR}/error-ppm.log
-        CustomLog ${APACHE_LOG_DIR}/access-ppm.log
+        CustomLog ${APACHE_LOG_DIR}/access-ppm.log combined
 
         <Directory /opt/ppm/web>
                 Options Indexes FollowSymLinks MultiViews
@@ -143,6 +143,10 @@ env[PATH] = /usr/local/bin:/usr/bin:/bin
 ```
 
 `a2ensite ppm.conf`
+
+`a2enmod rewrite`
+
+`a2enmod headers`
 
 `systemctl reload apache2`
 
