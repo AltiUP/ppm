@@ -3,7 +3,7 @@ parameters:
     database_host: localhost
     database_name: ppm
     database_user: ppm
-    database_password:
+    database_password: test
     database_name_test: ppm_test
 
     mailer_transport:
