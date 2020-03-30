@@ -53,8 +53,6 @@ fi
 # Checking admin user account
 if [ ! -z "$(grep ^ppm: /etc/passwd)" ] && [ -z "$force" ]; then
     echo 'Please remove ppm user account before proceeding.'
-    echo 'If you want to do it automatically run installer with -f option:'
-    echo -e "Example: bash $0 --force\n"
     check_result 1 "User ppm exists"
 fi
 
@@ -80,8 +78,6 @@ if [ ! -z "$conflicts" ] && [ -z "$force" ]; then
     echo "$conflicts"
     echo
     echo 'It is highly recommended to remove them before proceeding.'
-    echo 'If you want to force installation run this script with -f option:'
-    echo "Example: bash $0 --force"
     echo
     echo '!!! !!! !!! !!! !!! !!! !!! !!! !!! !!! !!! !!! !!! !!! !!! !!! !!!'
     echo
