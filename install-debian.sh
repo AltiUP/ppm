@@ -187,6 +187,7 @@ done
     # Configuring Workers service
     cd ~
     cp $ppminstall/service/ppm-workers.service /etc/systemd/system/ppm-workers.service
+    chown root:root /etc/systemd/system/ppm-workers.service
     systemctl enable ppm-workers.service
     systemctl start ppm-workers.service
 
