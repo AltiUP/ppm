@@ -1,0 +1,17 @@
+{% extends "PackagistWebBundle::layout.html.twig" %}
+
+{% block content %}
+    <h2 class="title">Flux Atom/RSS</h2>
+
+    <h3>Flux globaux</h3>
+    <p>Nouveaux packages : <a href="{{ url('feed_packages', {_format: 'rss'}) }}">RSS</a>, <a href="{{ url('feed_packages', {_format: 'atom'}) }}">Atom</a></p>
+    <p>Nouvelles version : <a href="{{ url('feed_releases', {_format: 'rss'}) }}">RSS</a>, <a href="{{ url('feed_releases', {_format: 'atom'}) }}">Atom</a></p>
+
+    <h3>Flux par fournisseur</h3>
+    <p>Nouvelles versions pour un fournisseur spécifique : <code>{{ url('feed_vendor', {vendor: 'XXX', _format: 'rss'})|replace({XXX: '%vendor%'}) }}</code></p>
+    <p>Remplacer <code>%vendor%</code> par le nom du fournisseur, et changer le rss par atom si vous préférez utiliser les flux atom.</p>
+
+    <h3>Flux par packages</h3>
+    <p>Nouvelles versions pour un package spécifique : <code>{{ url('feed_package', {package: 'X/X', _format: 'rss'})|replace({'X/X': '%vendor/package%'}) }}</code></p>
+    <p>Remplacer <code>%vendor/package%</code> par le nom du fournisseur, et changer le rss par atom si vous préférez utiliser les flux atom.</p>
+{% endblock %}

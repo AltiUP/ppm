@@ -1,0 +1,10 @@
+web/bundles/
+web/packages*.json
+web/p
+web/p2
+web/satis/
+app/cache/*
+app/logs/*
+app/satis/satis.json
+.composer/
+.gitconfig

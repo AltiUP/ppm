@@ -1,0 +1,55 @@
+parameters:
+    database_driver: pdo_mysql
+    database_host: localhost
+    database_name: ppm
+    database_user: ppm
+    database_password:
+    database_name_test: ppm_test
+
+    mailer_transport:
+    mailer_host: localhost
+    mailer_user:
+    mailer_password:
+    mailer_from_email: ppm@exemple.tld
+    mailer_from_name: Private Package Manager
+    mailer_encryption: tls
+    mailer_auth_mode: login
+
+    # packagist_host: example.org
+    # router.request_context.host: '%packagist_host%'
+    # router.request_context.scheme: https
+
+    redis_dsn: redis://localhost/1
+    redis_dsn_test: redis://127.0.0.1/14
+    redis_session_dsn: redis://localhost/2
+
+    locale: fr
+
+    google_analytics:
+        ga_key:
+
+    # set those to values obtained by creating an application at https://github.com/settings/applications
+    github.client_id: A_INSERER_APRES_INSTALLATION
+    github.client_secret: A_INSERER_APRES_INSTALLATION
+    # set to a random value
+    github.webhook_secret: A_INSERER_APRES_INSTALLATION
+
+    # -- performance features --
+    # set both to apc to optimize things if it is available
+    validation_cache_backend: apc
+    doctrine_cache_backend: apc
+
+    # -- security features --
+    secret: A_INSERER_APRES_INSTALLATION
+    remember_me.secret: A_INSERER_APRES_INSTALLATION
+
+    # set to true to enforce ssl, make sure you have a proper certificate in place
+    force_ssl: false
+    # e.g. ['^(.+\.)?packagist\.org$'] to allow packagist.org and all subdomains as valid hosts
+    trusted_hosts: ppm.exemple.tld
+
+    # -- Algolia credentials --
+    algolia.app_id: A_INSERER
+    algolia.admin_key: A_INSERER
+    algolia.search_key: A_INSERER
+    algolia.index_name: 'ppm'
