@@ -211,7 +211,7 @@ WantedBy=multi-user.target
 
 `systemctl start ppm-workers.service`
 
-# Tache cron
+# 6 - Tache cron :
 
 # Pour l'utilisateur PPM
 
