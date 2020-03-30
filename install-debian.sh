@@ -57,13 +57,13 @@ software="php7.3 php7.3-zip php7.3-xml php7.3-readline php7.3-opcache php7.3-mys
 # Printing nice ascii aslogo
 clear
 echo
-echo ' _|_|_|_|_|    _|_|_|_|_|    _|_||  |_|_|'
-echo ' _|      _|    _|      _|    _| ||  || _|'
-echo ' _|_|_|_|_|    _|_|_|_|_|    _|  ||||  _|'
-echo ' _|            _|            _|        _|'
-echo ' _|            _|            _|        _|'
+echo ' _|_|_|_|_|    _|_|_|_|_|    |_|||   |||_|'
+echo ' _|      _|    _|      _|    |_| || || |_|'
+echo ' _|_|_|_|_|    _|_|_|_|_|    |_|  |||  |_|'
+echo ' _|            _|            |_|       |_|'
+echo ' _|            _|            |_|       |_|'
 echo
-echo '                     Private Packages Manager'
+echo '                  Private Packages Manager'
 echo -e "\n\n"
 
 echo 'Following software will be installed on your system:'
@@ -226,11 +226,11 @@ Sincerely yours
 # Congrats
 echo '======================================================='
 echo
-echo ' _|_|_|_|_|    _|_|_|_|_|    _|_||  |_|_|'
-echo ' _|      _|    _|      _|    _| ||  || _|'
-echo ' _|_|_|_|_|    _|_|_|_|_|    _|  ||||  _|'
-echo ' _|            _|            _|        _|'
-echo ' _|            _|            _|        _|'
+echo ' _|_|_|_|_|    _|_|_|_|_|    |_|||   |||_|'
+echo ' _|      _|    _|      _|    |_| || || |_|'
+echo ' _|_|_|_|_|    _|_|_|_|_|    |_|  |||  |_|'
+echo ' _|            _|            |_|       |_|'
+echo ' _|            _|            |_|       |_|'
 echo
 echo
 cat $tmpfile
