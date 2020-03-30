@@ -185,7 +185,8 @@ done
     sudo -u ppm app/console doctrine:schema:create
 
     # Configuring Workers service
-    cp -a $ppminstall/service/ppm-workers.service /etc/systemd/system/ppm-workers.service
+    cd ~
+    cp $ppminstall/service/ppm-workers.service /etc/systemd/system/ppm-workers.service
     systemctl enable ppm-workers.service
     systemctl start ppm-workers.service
 
