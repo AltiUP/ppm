@@ -62,28 +62,6 @@ if [ ! -e '/usr/bin/wget' ]; then
     check_result $? "Can't install wget"
 fi
 
-# Check installed packages
-tmpfile=$(mktemp -p /tmp)
-dpkg --get-selections > $tmpfile
-for pkg in mysql-server mariadb-server apache2; do
-    if [ ! -z "$(grep $pkg $tmpfile)" ]; then
-        conflicts="$pkg $conflicts"
-    fi
-done
-rm -f $tmpfile
-if [ ! -z "$conflicts" ] && [ -z "$force" ]; then
-    echo '!!! !!! !!! !!! !!! !!! !!! !!! !!! !!! !!! !!! !!! !!! !!! !!! !!!'
-    echo
-    echo 'Following packages are already installed:'
-    echo "$conflicts"
-    echo
-    echo 'It is highly recommended to remove them before proceeding.'
-    echo
-    echo '!!! !!! !!! !!! !!! !!! !!! !!! !!! !!! !!! !!! !!! !!! !!! !!! !!!'
-    echo
-    check_result 1 "Private Packages Manager should be installed on clean server."
-fi
-
 
 #----------------------------------------------------------#
 #                       Brief Info                         #
@@ -115,20 +93,6 @@ sleep 5
 
 
 #----------------------------------------------------------#
-#                      Checking swap                       #
-#----------------------------------------------------------#
-
-# Checking swap on small instances
-if [ -z "$(swapon -s)" ] && [ $memory -lt 1000000 ]; then
-    fallocate -l 1G /swapfile
-    chmod 600 /swapfile
-    mkswap /swapfile
-    swapon /swapfile
-    echo "/swapfile   none    swap    sw    0   0" >> /etc/fstab
-fi
-
-
-#----------------------------------------------------------#
 #                   Upgrade repository                     #
 #----------------------------------------------------------#
 
@@ -147,17 +111,6 @@ apt-get update
 # Install apt packages
 apt-get -y install $software
 check_result $? "apt-get install failed"
-
-
-#----------------------------------------------------------#
-#                     Configure system                     #
-#----------------------------------------------------------#
-
-# NTP Synchronization
-echo '#!/bin/sh' > /etc/cron.daily/ntpdate
-echo "$(which ntpdate) -s pool.ntp.org" >> /etc/cron.daily/ntpdate
-chmod 775 /etc/cron.daily/ntpdate
-ntpdate -s pool.ntp.org
 
 
 #----------------------------------------------------------#
