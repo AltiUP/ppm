@@ -7,8 +7,6 @@
 #----------------------------------------------------------#
 export PATH=$PATH:/sbin
 export DEBIAN_FRONTEND=noninteractive
-RHOST='apt.vestacp.com'
-CHOST='c.vestacp.com'
 VERSION='debian'
 PPM='/opt/ppm'
 memory=$(grep 'MemTotal' /proc/meminfo |tr ' ' '\n' |grep [0-9])
@@ -16,46 +14,20 @@ arch=$(uname -i)
 os='debian'
 release=$(cat /etc/debian_version|grep -o [0-9]|head -n1)
 codename="$(cat /etc/os-release |grep VERSION= |cut -f 2 -d \(|cut -f 1 -d \))"
-vestacp="$VESTA/install/$VERSION/$release"
+ppminstall="$PPM/install/$VERSION/$release"
 
-if [ "$release" -eq 9 ]; then
-    software="nginx apache2 apache2-utils apache2-suexec-custom
-        libapache2-mod-ruid2 libapache2-mod-fcgid libapache2-mod-php php
-        php-common php-cgi php-mysql php-curl php-fpm php-pgsql awstats
-        webalizer vsftpd proftpd-basic bind9 exim4 exim4-daemon-heavy
-        clamav-daemon spamassassin dovecot-imapd dovecot-pop3d roundcube-core
-        roundcube-mysql roundcube-plugins mysql-server mysql-common
-        mysql-client postgresql postgresql-contrib phppgadmin phpmyadmin mc
-        flex whois rssh git idn zip sudo bc ftp lsof ntpdate rrdtool quota
-        e2fslibs bsdutils e2fsprogs curl imagemagick fail2ban dnsutils
-        bsdmainutils cron vesta vesta-nginx vesta-php expect libmail-dkim-perl
-        unrar-free vim-common vesta-ioncube vesta-softaculous net-tools unzip"
-elif [ "$release" -eq 8 ]; then
-    software="nginx apache2 apache2-utils apache2.2-common
-        apache2-suexec-custom libapache2-mod-ruid2
-        libapache2-mod-fcgid libapache2-mod-php5 php5 php5-common php5-cgi
-        php5-mysql php5-curl php5-fpm php5-pgsql awstats webalizer vsftpd
-        proftpd-basic bind9 exim4 exim4-daemon-heavy clamav-daemon
-        spamassassin dovecot-imapd dovecot-pop3d roundcube-core
-        roundcube-mysql roundcube-plugins mysql-server mysql-common
-        mysql-client postgresql postgresql-contrib phppgadmin phpMyAdmin mc
-        flex whois rssh git idn zip sudo bc ftp lsof ntpdate rrdtool quota
-        e2fslibs bsdutils e2fsprogs curl imagemagick fail2ban dnsutils
-        bsdmainutils cron vesta vesta-nginx vesta-php expect libmail-dkim-perl
-        unrar-free vim-common vesta-ioncube vesta-softaculous net-tools unzip"
-else
-    software="nginx apache2 apache2-utils apache2.2-common
-        apache2-suexec-custom libapache2-mod-ruid2
-        libapache2-mod-fcgid libapache2-mod-php5 php5 php5-common php5-cgi
-        php5-mysql php5-curl php5-fpm php5-pgsql awstats webalizer vsftpd
-        proftpd-basic proftpd-mod-vroot bind9 exim4 exim4-daemon-heavy
-        clamav-daemon spamassassin dovecot-imapd dovecot-pop3d roundcube-core
-        roundcube-mysql roundcube-plugins mysql-server mysql-common
-        mysql-client postgresql postgresql-contrib phppgadmin phpMyAdmin mc
-        flex whois rssh git idn zip sudo bc ftp lsof ntpdate rrdtool quota
-        e2fslibs bsdutils e2fsprogs curl imagemagick fail2ban dnsutils
-        bsdmainutils cron vesta vesta-nginx vesta-php expect unrar-free
-        vim-common vesta-ioncube vesta-softaculous net-tools unzip"
+if [ "$release" -eq 10 ]; then
+    software="php7.3 php7.3-zip php7.3-xml php7.3-readline 
+        php7.3-opcache php7.3-mysql php7.3-mbstring php7.3-json 
+        php7.3-gd php7.3-fpm php7.3-curl php7.3-common php7.3-cli 
+        php-cli php7.3-apc php-mbstring mariadb-server redis-server 
+        apache2 git curl unzip sudo"
+else [ "$release" -eq 9 ]
+    software="php7.3 php7.3-zip php7.3-xml php7.3-readline 
+        php7.3-opcache php7.3-mysql php7.3-mbstring php7.3-json 
+        php7.3-gd php7.3-fpm php7.3-curl php7.3-common php7.3-cli 
+        php-cli php7.3-apc php-mbstring mariadb-server redis-server 
+        apache2 git curl unzip sudo"
 fi
 
 # Defining help function
@@ -63,21 +35,6 @@ help() {
     echo "Usage: $0 [OPTIONS]
   -a, --apache            Install Apache        [yes|no]  default: yes
   -n, --nginx             Install Nginx         [yes|no]  default: yes
-  -w, --phpfpm            Install PHP-FPM       [yes|no]  default: no
-  -v, --vsftpd            Install Vsftpd        [yes|no]  default: yes
-  -j, --proftpd           Install ProFTPD       [yes|no]  default: no
-  -k, --named             Install Bind          [yes|no]  default: yes
-  -m, --mysql             Install MySQL         [yes|no]  default: yes
-  -g, --postgresql        Install PostgreSQL    [yes|no]  default: no
-  -d, --mongodb           Install MongoDB       [yes|no]  unsupported
-  -x, --exim              Install Exim          [yes|no]  default: yes
-  -z, --dovecot           Install Dovecot       [yes|no]  default: yes
-  -c, --clamav            Install ClamAV        [yes|no]  default: yes
-  -t, --spamassassin      Install SpamAssassin  [yes|no]  default: yes
-  -i, --iptables          Install Iptables      [yes|no]  default: yes
-  -b, --fail2ban          Install Fail2ban      [yes|no]  default: yes
-  -o, --softaculous       Install Softaculous   [yes|no]  default: yes
-  -q, --quota             Filesystem Quota      [yes|no]  default: no
   -l, --lang              Default language                default: en
   -y, --interactive       Interactive install   [yes|no]  default: yes
   -s, --hostname          Set hostname
@@ -86,7 +43,7 @@ help() {
   -f, --force             Force installation
   -h, --help              Print this help
 
-  Example: bash $0 -e demo@vestacp.com -p p4ssw0rd --apache no --phpfpm yes"
+  Example: bash $0 -e demo@exemple.tld -p p4ssw0rd --apache yes"
     exit 1
 }
 
@@ -150,22 +107,6 @@ for arg; do
     case "$arg" in
         --apache)               args="${args}-a " ;;
         --nginx)                args="${args}-n " ;;
-        --phpfpm)               args="${args}-w " ;;
-        --vsftpd)               args="${args}-v " ;;
-        --proftpd)              args="${args}-j " ;;
-        --named)                args="${args}-k " ;;
-        --mysql)                args="${args}-m " ;;
-        --postgresql)           args="${args}-g " ;;
-        --mongodb)              args="${args}-d " ;;
-        --exim)                 args="${args}-x " ;;
-        --dovecot)              args="${args}-z " ;;
-        --clamav)               args="${args}-c " ;;
-        --spamassassin)         args="${args}-t " ;;
-        --iptables)             args="${args}-i " ;;
-        --fail2ban)             args="${args}-b " ;;
-        --remi)                 args="${args}-r " ;;
-        --softaculous)          args="${args}-o " ;;
-        --quota)                args="${args}-q " ;;
         --lang)                 args="${args}-l " ;;
         --interactive)          args="${args}-y " ;;
         --hostname)             args="${args}-s " ;;
@@ -180,26 +121,10 @@ done
 eval set -- "$args"
 
 # Parsing arguments
-while getopts "a:n:w:v:j:k:m:g:d:x:z:c:t:i:b:r:o:q:l:y:s:e:p:fh" Option; do
+while getopts "a:n:l:y:s:e:p:fh" Option; do
     case $Option in
         a) apache=$OPTARG ;;            # Apache
         n) nginx=$OPTARG ;;             # Nginx
-        w) phpfpm=$OPTARG ;;            # PHP-FPM
-        v) vsftpd=$OPTARG ;;            # Vsftpd
-        j) proftpd=$OPTARG ;;           # Proftpd
-        k) named=$OPTARG ;;             # Named
-        m) mysql=$OPTARG ;;             # MySQL
-        g) postgresql=$OPTARG ;;        # PostgreSQL
-        d) mongodb=$OPTARG ;;           # MongoDB (unsupported)
-        x) exim=$OPTARG ;;              # Exim
-        z) dovecot=$OPTARG ;;           # Dovecot
-        c) clamd=$OPTARG ;;             # ClamAV
-        t) spamd=$OPTARG ;;             # SpamAssassin
-        i) iptables=$OPTARG ;;          # Iptables
-        b) fail2ban=$OPTARG ;;          # Fail2ban
-        r) remi=$OPTARG ;;              # Remi repo
-        o) softaculous=$OPTARG ;;       # Softaculous plugin
-        q) quota=$OPTARG ;;             # FS Quota
         l) lang=$OPTARG ;;              # Language
         y) interactive=$OPTARG ;;       # Interactive install
         s) servername=$OPTARG ;;        # Hostname
@@ -212,47 +137,10 @@ while getopts "a:n:w:v:j:k:m:g:d:x:z:c:t:i:b:r:o:q:l:y:s:e:p:fh" Option; do
 done
 
 # Defining default software stack
-set_default_value 'nginx' 'yes'
+set_default_value 'nginx' 'no'
 set_default_value 'apache' 'yes'
-set_default_value 'phpfpm' 'no'
-set_default_value 'vsftpd' 'yes'
-set_default_value 'proftpd' 'no'
-set_default_value 'named' 'yes'
-set_default_value 'mysql' 'yes'
-set_default_value 'postgresql' 'no'
-set_default_value 'mongodb' 'no'
-set_default_value 'exim' 'yes'
-set_default_value 'dovecot' 'yes'
-if [ $memory -lt 1500000 ]; then
-    set_default_value 'clamd' 'no'
-    set_default_value 'spamd' 'no'
-else
-    set_default_value 'clamd' 'yes'
-    set_default_value 'spamd' 'yes'
-fi
-set_default_value 'iptables' 'yes'
-set_default_value 'fail2ban' 'yes'
-set_default_value 'softaculous' 'yes'
-set_default_value 'quota' 'no'
 set_default_value 'interactive' 'yes'
-set_default_lang 'en'
-
-# Checking software conflicts
-if [ "$phpfpm" = 'yes' ]; then
-    apache='no'
-    nginx='yes'
-fi
-if [ "$proftpd" = 'yes' ]; then
-    vsftpd='no'
-fi
-if [ "$exim" = 'no' ]; then
-    clamd='no'
-    spamd='no'
-    dovecot='no'
-fi
-if [ "$iptables" = 'no' ]; then
-    fail2ban='no'
-fi
+set_default_lang 'fr'
 
 # Checking root permissions
 if [ "x$(id -u)" != 'x0' ]; then
@@ -260,11 +148,11 @@ if [ "x$(id -u)" != 'x0' ]; then
 fi
 
 # Checking admin user account
-if [ ! -z "$(grep ^admin: /etc/passwd)" ] && [ -z "$force" ]; then
-    echo 'Please remove admin user account before proceeding.'
+if [ ! -z "$(grep ^ppm: /etc/passwd)" ] && [ -z "$force" ]; then
+    echo 'Please remove ppm user account before proceeding.'
     echo 'If you want to do it automatically run installer with -f option:'
     echo -e "Example: bash $0 --force\n"
-    check_result 1 "User admin exists"
+    check_result 1 "User ppm exists"
 fi
 
 # Checking wget
@@ -273,14 +161,10 @@ if [ ! -e '/usr/bin/wget' ]; then
     check_result $? "Can't install wget"
 fi
 
-# Checking repository availability
-wget -q "c.vestacp.com/deb_signing.key" -O /dev/null
-check_result $? "No access to Vesta repository"
-
 # Check installed packages
 tmpfile=$(mktemp -p /tmp)
 dpkg --get-selections > $tmpfile
-for pkg in exim4 mysql-server apache2 nginx vesta; do
+for pkg in mysql-server mariadb-server apache2 nginx; do
     if [ ! -z "$(grep $pkg $tmpfile)" ]; then
         conflicts="$pkg $conflicts"
     fi
@@ -298,7 +182,7 @@ if [ ! -z "$conflicts" ] && [ -z "$force" ]; then
     echo
     echo '!!! !!! !!! !!! !!! !!! !!! !!! !!! !!! !!! !!! !!! !!! !!! !!! !!!'
     echo
-    check_result 1 "Control Panel should be installed on clean server."
+    check_result 1 "Private Packages Manager should be installed on clean server."
 fi
 
 
@@ -309,13 +193,13 @@ fi
 # Printing nice ascii aslogo
 clear
 echo
-echo ' _|      _|  _|_|_|_|    _|_|_|  _|_|_|_|_|    _|_|'
-echo ' _|      _|  _|        _|            _|      _|    _|'
-echo ' _|      _|  _|_|_|      _|_|        _|      _|_|_|_|'
-echo '   _|  _|    _|              _|      _|      _|    _|'
-echo '     _|      _|_|_|_|  _|_|_|        _|      _|    _|'
+echo ' _|_|_|_|_|    _|_|_|_|_|     _|_|_|   _|_|_|'
+echo ' _|      _|    _|      _|     _|   _|  _|  _|'
+echo ' _|_|_|_|_|    _|_|_|_|_|     _|    _|_|   _|'
+echo ' _|            _|             _|           _|'
+echo ' _|            _|             _|           _|'
 echo
-echo '                                  Vesta Control Panel'
+echo '                     Private Packages Manager'
 echo -e "\n\n"
 
 echo 'Following software will be installed on your system:'
@@ -327,68 +211,6 @@ fi
 if [ "$apache" = 'yes' ] && [ "$nginx" = 'no' ] ; then
     echo '   - Apache Web Server'
 fi
-if [ "$apache" = 'yes' ] && [ "$nginx"  = 'yes' ] ; then
-    echo '   - Apache Web Server (as backend)'
-fi
-if [ "$phpfpm"  = 'yes' ]; then
-    echo '   - PHP-FPM Application Server'
-fi
-
-# DNS stack
-if [ "$named" = 'yes' ]; then
-    echo '   - Bind DNS Server'
-fi
-
-# Mail Stack
-if [ "$exim" = 'yes' ]; then
-    echo -n '   - Exim mail server'
-    if [ "$clamd" = 'yes'  ] ||  [ "$spamd" = 'yes' ] ; then
-        echo -n ' + '
-        if [ "$clamd" = 'yes' ]; then
-            echo -n 'Antivirus '
-        fi
-        if [ "$spamd" = 'yes' ]; then
-            echo -n 'Antispam'
-        fi
-    fi
-    echo
-    if [ "$dovecot" = 'yes' ]; then
-        echo '   - Dovecot POP3/IMAP Server'
-    fi
-fi
-
-# DB stack
-if [ "$mysql" = 'yes' ]; then
-    echo '   - MySQL Database Server'
-fi
-if [ "$postgresql" = 'yes' ]; then
-    echo '   - PostgreSQL Database Server'
-fi
-if [ "$mongodb" = 'yes' ]; then
-    echo '   - MongoDB Database Server'
-fi
-
-# FTP stack
-if [ "$vsftpd" = 'yes' ]; then
-    echo '   - Vsftpd FTP Server'
-fi
-if [ "$proftpd" = 'yes' ]; then
-    echo '   - ProFTPD FTP Server'
-fi
-
-# Softaculous
-if [ "$softaculous" = 'yes' ]; then
-    echo '   - Softaculous Plugin'
-fi
-
-# Firewall stack
-if [ "$iptables" = 'yes' ]; then
-    echo -n '   - Iptables Firewall'
-fi
-if [ "$iptables" = 'yes' ] && [ "$fail2ban" = 'yes' ]; then
-    echo -n ' + Fail2Ban'
-fi
-echo -e "\n\n"
 
 # Asking for confirmation to proceed
 if [ "$interactive" = 'yes' ]; then
@@ -397,48 +219,7 @@ if [ "$interactive" = 'yes' ]; then
         echo 'Goodbye'
         exit 1
     fi
-
-    # Asking for contact email
-    if [ -z "$email" ]; then
-        read -p 'Please enter admin email address: ' email
-    fi
-
-    # Asking to set FQDN hostname
-    if [ -z "$servername" ]; then
-        read -p "Please enter FQDN hostname [$(hostname)]: " servername
-    fi
 fi
-
-# Generating admin password if it wasn't set
-if [ -z "$vpass" ]; then
-    vpass=$(gen_pass)
-fi
-
-# Set hostname if it wasn't set
-if [ -z "$servername" ]; then
-    servername=$(hostname -f)
-fi
-
-# Set FQDN if it wasn't set
-mask1='(([[:alnum:]](-?[[:alnum:]])*)\.)'
-mask2='*[[:alnum:]](-?[[:alnum:]])+\.[[:alnum:]]{2,}'
-if ! [[ "$servername" =~ ^${mask1}${mask2}$ ]]; then
-    if [ ! -z "$servername" ]; then
-        servername="$servername.example.com"
-    else
-        servername="example.com"
-    fi
-    echo "127.0.0.1 $servername" >> /etc/hosts
-fi
-
-# Set email if it wasn't set
-if [ -z "$email" ]; then
-    email="admin@$servername"
-fi
-
-# Defining backup directory
-vst_backups="/root/vst_install_backups/$(date +%s)"
-echo "Installation backup directory: $vst_backups"
 
 # Printing start message and sleeping for 5 seconds
 echo -e "\n\n\n\nInstallation will take about 15 minutes ...\n"
@@ -460,180 +241,12 @@ fi
 
 
 #----------------------------------------------------------#
-#                   Install repository                     #
+#                   Upgrade repository                     #
 #----------------------------------------------------------#
 
 # Updating system
 apt-get -y upgrade
 check_result $? 'apt-get upgrade failed'
-
-# Installing nginx repo
-apt=/etc/apt/sources.list.d
-echo "deb http://nginx.org/packages/debian/ $codename nginx" > $apt/nginx.list
-wget http://nginx.org/keys/nginx_signing.key -O /tmp/nginx_signing.key
-apt-key add /tmp/nginx_signing.key
-
-# Installing vesta repo
-echo "deb http://$RHOST/$codename/ $codename vesta" > $apt/vesta.list
-wget $CHOST/deb_signing.key -O deb_signing.key
-apt-key add deb_signing.key
-
-# Installing jessie backports
-if [ "$release" -eq 8 ]; then
-    if [ ! -e /etc/apt/apt.conf ]; then
-        echo 'Acquire::Check-Valid-Until "false";' >> /etc/apt/apt.conf
-    fi
-    if [ ! -e /etc/apt/sources.list.d/backports.list ]; then
-        echo "deb http://archive.debian.org/debian jessie-backports main" >\
-            /etc/apt/sources.list.d/backports.list
-    fi
-fi
-
-
-#----------------------------------------------------------#
-#                         Backup                           #
-#----------------------------------------------------------#
-
-# Creating backup directory tree
-mkdir -p $vst_backups
-cd $vst_backups
-mkdir nginx apache2 php php5 php5-fpm vsftpd proftpd bind exim4 dovecot clamd
-mkdir spamassassin mysql postgresql mongodb vesta
-
-# Backing up Nginx configuration
-service nginx stop > /dev/null 2>&1
-cp -r /etc/nginx/* $vst_backups/nginx >/dev/null 2>&1
-
-# Backing up Apache configuration
-service apache2 stop > /dev/null 2>&1
-cp -r /etc/apache2/* $vst_backups/apache2 > /dev/null 2>&1
-rm -f /etc/apache2/conf.d/* > /dev/null 2>&1
-
-# Backing up PHP configuration
-cp /etc/php.ini $vst_backups/php > /dev/null 2>&1
-cp -r /etc/php.d  $vst_backups/php > /dev/null 2>&1
-
-# Backing up PHP configuration
-service php5-fpm stop >/dev/null 2>&1
-cp /etc/php5/* $vst_backups/php5 > /dev/null 2>&1
-rm -f /etc/php5/fpm/pool.d/* >/dev/null 2>&1
-
-# Backing up Bind configuration
-service bind9 stop > /dev/null 2>&1
-cp -r /etc/bind/* $vst_backups/bind > /dev/null 2>&1
-
-# Backing up Vsftpd configuration
-service vsftpd stop > /dev/null 2>&1
-cp /etc/vsftpd.conf $vst_backups/vsftpd > /dev/null 2>&1
-
-# Backing up ProFTPD configuration
-service proftpd stop > /dev/null 2>&1
-cp /etc/proftpd.conf $vst_backups/proftpd >/dev/null 2>&1
-
-# Backing up Exim configuration
-service exim4 stop > /dev/null 2>&1
-cp -r /etc/exim4/* $vst_backups/exim4 > /dev/null 2>&1
-
-# Backing up ClamAV configuration
-service clamav-daemon stop > /dev/null 2>&1
-cp -r /etc/clamav/* $vst_backups/clamav > /dev/null 2>&1
-
-# Backing up SpamAssassin configuration
-service spamassassin stop > /dev/null 2>&1
-cp -r /etc/spamassassin/* $vst_backups/spamassassin > /dev/null 2>&1
-
-# Backing up Dovecot configuration
-service dovecot stop > /dev/null 2>&1
-cp /etc/dovecot.conf $vst_backups/dovecot > /dev/null 2>&1
-cp -r /etc/dovecot/* $vst_backups/dovecot > /dev/null 2>&1
-
-# Backing up MySQL/MariaDB configuration and data
-service mysql stop > /dev/null 2>&1
-killall -9 mysqld > /dev/null 2>&1
-mv /var/lib/mysql $vst_backups/mysql/mysql_datadir > /dev/null 2>&1
-cp -r /etc/mysql/* $vst_backups/mysql > /dev/null 2>&1
-mv -f /root/.my.cnf $vst_backups/mysql > /dev/null 2>&1
-
-# Backup vesta
-service vesta stop > /dev/null 2>&1
-cp -r $VESTA/* $vst_backups/vesta > /dev/null 2>&1
-apt-get -y remove vesta vesta-nginx vesta-php > /dev/null 2>&1
-apt-get -y purge vesta vesta-nginx vesta-php > /dev/null 2>&1
-rm -rf $VESTA > /dev/null 2>&1
-
-
-#----------------------------------------------------------#
-#                     Package Excludes                     #
-#----------------------------------------------------------#
-
-# Excluding packages
-if [ "$nginx" = 'no'  ]; then
-    software=$(echo "$software" | sed -e "s/^nginx//")
-fi
-if [ "$apache" = 'no' ]; then
-    software=$(echo "$software" | sed -e "s/apache2 //")
-    software=$(echo "$software" | sed -e "s/apache2-utils//")
-    software=$(echo "$software" | sed -e "s/apache2-suexec-custom//")
-    software=$(echo "$software" | sed -e "s/apache2.2-common//")
-    software=$(echo "$software" | sed -e "s/libapache2-mod-ruid2//")
-    software=$(echo "$software" | sed -e "s/libapache2-mod-fcgid//")
-    software=$(echo "$software" | sed -e "s/libapache2-mod-php5//")
-    software=$(echo "$software" | sed -e "s/libapache2-mod-php//")
-fi
-if [ "$phpfpm" = 'no' ]; then
-    software=$(echo "$software" | sed -e "s/php5-fpm//")
-    software=$(echo "$software" | sed -e "s/php-fpm//")
-fi
-if [ "$vsftpd" = 'no' ]; then
-    software=$(echo "$software" | sed -e "s/vsftpd//")
-fi
-if [ "$proftpd" = 'no' ]; then
-    software=$(echo "$software" | sed -e "s/proftpd-basic//")
-    software=$(echo "$software" | sed -e "s/proftpd-mod-vroot//")
-fi
-if [ "$named" = 'no' ]; then
-    software=$(echo "$software" | sed -e "s/bind9//")
-fi
-if [ "$exim" = 'no' ]; then
-    software=$(echo "$software" | sed -e "s/exim4 //")
-    software=$(echo "$software" | sed -e "s/exim4-daemon-heavy//")
-    software=$(echo "$software" | sed -e "s/dovecot-imapd//")
-    software=$(echo "$software" | sed -e "s/dovecot-pop3d//")
-    software=$(echo "$software" | sed -e "s/clamav-daemon//")
-    software=$(echo "$software" | sed -e "s/spamassassin//")
-fi
-if [ "$clamd" = 'no' ]; then
-    software=$(echo "$software" | sed -e "s/clamav-daemon//")
-fi
-if [ "$spamd" = 'no' ]; then
-    software=$(echo "$software" | sed -e "s/spamassassin//")
-    software=$(echo "$software" | sed -e "s/libmail-dkim-perl//")
-fi
-if [ "$dovecot" = 'no' ]; then
-    software=$(echo "$software" | sed -e "s/dovecot-imapd//")
-    software=$(echo "$software" | sed -e "s/dovecot-pop3d//")
-fi
-if [ "$mysql" = 'no' ]; then
-    software=$(echo "$software" | sed -e 's/mysql-server//')
-    software=$(echo "$software" | sed -e 's/mysql-client//')
-    software=$(echo "$software" | sed -e 's/mysql-common//')
-    software=$(echo "$software" | sed -e 's/php5-mysql//')
-    software=$(echo "$software" | sed -e 's/php-mysql//')
-    software=$(echo "$software" | sed -e 's/phpMyAdmin//')
-fi
-if [ "$postgresql" = 'no' ]; then
-    software=$(echo "$software" | sed -e 's/postgresql-contrib//')
-    software=$(echo "$software" | sed -e 's/postgresql//')
-    software=$(echo "$software" | sed -e 's/php5-pgsql//')
-    software=$(echo "$software" | sed -e 's/php-pgsql//')
-    software=$(echo "$software" | sed -e 's/phppgadmin//')
-fi
-if [ "$softaculous" = 'no' ]; then
-    software=$(echo "$software" | sed -e 's/vesta-softaculous//')
-fi
-if [ "$iptables" = 'no' ] || [ "$fail2ban" = 'no' ]; then
-    software=$(echo "$software" | sed -e 's/fail2ban//')
-fi
 
 
 #----------------------------------------------------------#
@@ -659,19 +272,8 @@ rm -f /usr/sbin/policy-rc.d
 #                     Configure system                     #
 #----------------------------------------------------------#
 
-# Enable SSH password auth
-sed -i "s/rdAuthentication no/rdAuthentication yes/g" /etc/ssh/sshd_config
-service ssh restart
-
-# Disable awstats cron
-rm -f /etc/cron.d/awstats
-
 # Set directory color
 echo 'LS_COLORS="$LS_COLORS:di=00;33"' >> /etc/profile
-
-# Register /sbin/nologin and /usr/sbin/nologin
-echo "/sbin/nologin" >> /etc/shells
-echo "/usr/sbin/nologin" >> /etc/shells
 
 # NTP Synchronization
 echo '#!/bin/sh' > /etc/cron.daily/ntpdate
@@ -679,32 +281,10 @@ echo "$(which ntpdate) -s pool.ntp.org" >> /etc/cron.daily/ntpdate
 chmod 775 /etc/cron.daily/ntpdate
 ntpdate -s pool.ntp.org
 
-# Setup rssh
-if [ -z "$(grep /usr/bin/rssh /etc/shells)" ]; then
-    echo /usr/bin/rssh >> /etc/shells
-fi
-sed -i 's/#allowscp/allowscp/' /etc/rssh.conf
-sed -i 's/#allowsftp/allowsftp/' /etc/rssh.conf
-sed -i 's/#allowrsync/allowrsync/' /etc/rssh.conf
-chmod 755 /usr/bin/rssh
-
 
 #----------------------------------------------------------#
-#                     Configure VESTA                      #
+#                     Configure PPM                        #
 #----------------------------------------------------------#
-
-# Installing sudo configuration
-mkdir -p /etc/sudoers.d
-cp -f $vestacp/sudo/admin /etc/sudoers.d/
-chmod 440 /etc/sudoers.d/admin
-
-# Configuring system env
-echo "export VESTA='$VESTA'" > /etc/profile.d/vesta.sh
-chmod 755 /etc/profile.d/vesta.sh
-source /etc/profile.d/vesta.sh
-echo 'PATH=$PATH:'$VESTA'/bin' >> /root/.bash_profile
-echo 'export PATH' >> /root/.bash_profile
-source /root/.bash_profile
 
 # Configuring logrotate for Vesta logs
 cp -f $vestacp/logrotate/vesta /etc/logrotate.d/
