@@ -115,29 +115,29 @@ env[PATH] = /usr/local/bin:/usr/bin:/bin
         Header set X-Content-Type-Options: "nosniff"
 
         # Restreindre certain acces
-        <Files app.php>
-         <RequireAny>
-            Require ip 10.10.10.10 # Indiquer une IP Privée
-         </RequireAny>
-        </Files>
-
-        <Files app_dev.php>
-         <RequireAny>
-            Require ip 10.10.10.10 # Indiquer une IP Privée
-         </RequireAny>
-        </Files>
-
-        <Files register>
-         <RequireAny>
-            Require ip 10.10.10.10 # Indiquer une IP Privée
-         </RequireAny>
-        </Files>
-
-        <Files connect>
-         <RequireAny>
-            Require ip 10.10.10.10 # Indiquer une IP Privée
-         </RequireAny>
-        </Files>
+        #<Files app.php>
+        # <RequireAny>
+        #    Require ip 10.10.10.10 # Indiquer une IP Privée
+        # </RequireAny>
+        #</Files>
+        #
+        #<Files app_dev.php>
+        # <RequireAny>
+        #    Require ip 10.10.10.10 # Indiquer une IP Privée
+        # </RequireAny>
+        #</Files>
+        #
+        #<Files register>
+        # <RequireAny>
+        #    Require ip 10.10.10.10 # Indiquer une IP Privée
+        # </RequireAny>
+        #</Files>
+        #
+        #<Files connect>
+        # <RequireAny>
+        #    Require ip 10.10.10.10 # Indiquer une IP Privée
+        # </RequireAny>
+        #</Files>
 
 </VirtualHost>
 ```
