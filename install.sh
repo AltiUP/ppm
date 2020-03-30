@@ -1,13 +1,13 @@
 #!/bin/bash
-# Vesta installation wrapper
-# http://vestacp.com
+# Private Package Manager
+# https://github.com/AltiUP/ppm
 
 #
 # Currently Supported Operating Systems:
 #
 #   RHEL 5, 6, 7
 #   CentOS 5, 6, 7
-#   Debian 7, 8
+#   Debian 10
 #   Ubuntu 12.04 - 18.04
 #
 
@@ -17,21 +17,21 @@ if [ "x$(id -u)" != 'x0' ]; then
     exit 1
 fi
 
-# Check admin user account
-if [ ! -z "$(grep ^admin: /etc/passwd)" ] && [ -z "$1" ]; then
-    echo "Error: user admin exists"
+# Check ppm user account
+if [ ! -z "$(grep ^ppm: /etc/passwd)" ] && [ -z "$1" ]; then
+    echo "Error: user ppm exists"
     echo
-    echo 'Please remove admin user before proceeding.'
+    echo 'Please remove ppm user before proceeding.'
     echo 'If you want to do it automatically run installer with -f option:'
     echo "Example: bash $0 --force"
     exit 1
 fi
 
-# Check admin group
-if [ ! -z "$(grep ^admin: /etc/group)" ] && [ -z "$1" ]; then
-    echo "Error: group admin exists"
+# Check ppm group
+if [ ! -z "$(grep ^ppm: /etc/group)" ] && [ -z "$1" ]; then
+    echo "Error: group ppm exists"
     echo
-    echo 'Please remove admin group before proceeding.'
+    echo 'Please remove ppm group before proceeding.'
     echo 'If you want to do it automatically run installer with -f option:'
     echo "Example: bash $0 --force"
     exit 1
