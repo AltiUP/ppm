@@ -181,3 +181,29 @@ env[PATH] = /usr/local/bin:/usr/bin:/bin
 # Creation des tables
 
 `sudo -u ppm app/console doctrine:schema:create`
+
+# Création du service Workers
+
+`nano /etc/systemd/system/ppm-workers.service`
+
+```
+[Unit]
+Description=Workers PPM
+After=redis-server.service
+
+[Service]
+Type=simple
+User=ppm
+Group=ppm
+WorkingDirectory=/opt/ppm
+SyslogIdentifier=ppm-workers
+
+ExecStart=/opt/ppm/app/console packagist:run-workers
+ExecStop=
+
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+```
+
