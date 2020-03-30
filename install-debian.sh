@@ -186,8 +186,7 @@ sleep 5
     sudo -u ppm app/console cache:clear --env=prod
 
     # Configuring Workers service
-    cp $ppminstall/service/ppm-workers.service /etc/systemd/system/ppm-workers.service
-    chown root:root /etc/systemd/system/ppm-workers.service
+    cp -a $ppminstall/service/ppm-workers.service /etc/systemd/system/ppm-workers.service
     systemctl enable ppm-workers.service
     systemctl start ppm-workers.service
 
