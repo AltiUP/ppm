@@ -148,7 +148,7 @@ env[PATH] = /usr/local/bin:/usr/bin:/bin
 
 `a2enmod headers`
 
-`systemctl reload apache2`
+`systemctl restart apache2`
 
 # MariaDB
 
