@@ -105,7 +105,7 @@ check_result $? "apt-get install failed"
 #----------------------------------------------------------#
 
     # Clone repository
-    git clone https://exemple.tld /opt/ppm
+    git clone https://git.altiup.com/christophe.gherardi/ppm.git /opt/ppm
 
     # Add user and group
     useradd ppm -d /opt/ppm -M -r
@@ -165,11 +165,7 @@ done
     check_result $? "mysql start failed"
 
     # Securing MySQL installation
-    mysql -e "DELETE FROM mysql.user WHERE User=''"
     mysql -e "DROP DATABASE test" >/dev/null 2>&1
-    mysql -e "DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%'"
-    mysql -e "DELETE FROM mysql.user WHERE user='' or password='';"
-    mysql -e "FLUSH PRIVILEGES"
 
     # Create database
     mysql -u root -e "CREATE DATABASE ppm;"
