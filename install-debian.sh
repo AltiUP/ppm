@@ -179,16 +179,16 @@ done
 #                     Configure PPM                        #
 #----------------------------------------------------------#
 
-    # Configuring Workers service
-    cp $ppminstall/service/ppm-workers.service /etc/systemd/system/ppm-workers.service
-    chown root:root /etc/systemd/system/ppm-workers.service
-    systemctl enable ppm-workers.service
-    systemctl start ppm-workers.service
-
     # Setup dependencies
     cd /opt/ppm
     sudo -u ppm composer install
     sudo -u ppm app/console doctrine:schema:create
+
+    # Configuring Workers service
+    cp $ppminstall/service/ppm-workers.service /etc/systemd/system/ppm-workers.service
+    chown root:root /etc/systemd/system/ppm-workers.service
+    systemctl enable ppm-workers.service
+    systemctl start ppm-workers.service
 
     # Restart services
     service apache2 restart
