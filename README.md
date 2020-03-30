@@ -2,7 +2,7 @@
 
 Fork de l'excellent Packagist couplé à Satis
 
-########################################################
+################################################################################
 
 # Installation
 
@@ -210,3 +210,26 @@ WantedBy=multi-user.target
 `systemctl enable ppm-workers.service`
 
 `systemctl start ppm-workers.service`
+
+# Tache cron
+
+# Pour l'utilisateur PPM
+
+```
+# Start Packagist
+* * * * * /opt/ppm/app/console packagist:update --no-debug --env=prod
+* * * * * /opt/ppm/app/console packagist:dump --force --no-debug --env=prod
+* * * * * /opt/ppm/app/console packagist:index --no-debug --env=prod
+0 2 * * * /opt/ppm/app/console packagist:stats:compile --no-debug --env=prod
+# End Packagist
+```
+
+# Pour l'utilisateur root
+
+```
+# Start Satis
+*/5 * * * * /opt/ppm/app/satis/bin/update-satis
+# End Satis
+```
+
+################################################################################
