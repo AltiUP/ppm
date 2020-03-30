@@ -57,11 +57,11 @@ software="php7.3 php7.3-zip php7.3-xml php7.3-readline php7.3-opcache php7.3-mys
 # Printing nice ascii aslogo
 clear
 echo
-echo ' _|_|_|_|_|    _|_|_|_|_|     _|_|_|  _|_|_|'
-echo ' _|      _|    _|      _|     _|  ||  ||  _|'
-echo ' _|_|_|_|_|    _|_|_|_|_|     _|   ||||   _|'
-echo ' _|            _|             _|          _|'
-echo ' _|            _|             _|          _|'
+echo ' _|_|_|_|_|    _|_|_|_|_|    _|_||  |_|_|'
+echo ' _|      _|    _|      _|    _| ||  || _|'
+echo ' _|_|_|_|_|    _|_|_|_|_|    _|  ||||  _|'
+echo ' _|            _|            _|        _|'
+echo ' _|            _|            _|        _|'
 echo
 echo '                     Private Packages Manager'
 echo -e "\n\n"
@@ -123,7 +123,8 @@ sleep 5
 #                    Configure Apache                      #
 #----------------------------------------------------------#
 
-    cp -a $ppminstall/apache2/ppm.conf /etc/apache2/sites-available/ppm.conf
+    cp $ppminstall/apache2/ppm.conf /etc/apache2/sites-available/ppm.conf
+    chown root:root /etc/apache2/sites-available/ppm.conf
     a2ensite ppm.conf
     a2enmod rewrite
     a2enmod headers
@@ -138,7 +139,8 @@ sleep 5
 #                     Configure PHP-FPM                    #
 #----------------------------------------------------------#
 
-    cp -a $ppminstall/php-fpm/ppm.conf /etc/php/7.3/fpm/pool.d/ppm.conf
+    cp $ppminstall/php-fpm/ppm.conf /etc/php/7.3/fpm/pool.d/ppm.conf
+    chow root:root /etc/php/7.3/fpm/pool.d/ppm.conf
     service php7.3-fpm start
     check_result $? "php-fpm start failed"
 
@@ -184,11 +186,17 @@ sleep 5
     sudo -u ppm composer install
     sudo -u ppm app/console doctrine:schema:create
     sudo -u ppm app/console cache:clear --env=prod
+    cd ~
 
     # Configuring Workers service
-    cp -a $ppminstall/service/ppm-workers.service /etc/systemd/system/ppm-workers.service
+    cp $ppminstall/service/ppm-workers.service /etc/systemd/system/ppm-workers.service
+    chown root:root /etc/systemd/system/ppm-workers.service
     systemctl enable ppm-workers.service
     systemctl start ppm-workers.service
+
+    # Configure Cron
+    cp $ppminstall/cron/ppm /etc/cron.d/ppm
+    chown root:root /etc/cron.d/ppm
 
     # Restart services
     service apache2 restart
@@ -218,11 +226,11 @@ Sincerely yours
 # Congrats
 echo '======================================================='
 echo
-echo ' _|_|_|_|_|    _|_|_|_|_|     _|_|_|  _|_|_|'
-echo ' _|      _|    _|      _|     _|  ||  ||  _|'
-echo ' _|_|_|_|_|    _|_|_|_|_|     _|   ||||   _|'
-echo ' _|            _|             _|          _|'
-echo ' _|            _|             _|          _|'
+echo ' _|_|_|_|_|    _|_|_|_|_|    _|_||  |_|_|'
+echo ' _|      _|    _|      _|    _| ||  || _|'
+echo ' _|_|_|_|_|    _|_|_|_|_|    _|  ||||  _|'
+echo ' _|            _|            _|        _|'
+echo ' _|            _|            _|        _|'
 echo
 echo
 cat $tmpfile
