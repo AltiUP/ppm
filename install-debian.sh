@@ -7,7 +7,6 @@
 #----------------------------------------------------------#
 export PATH=$PATH:/sbin
 PPM='/opt/ppm'
-memory=$(grep 'MemTotal' /proc/meminfo |tr ' ' '\n' |grep [0-9])
 ppminstall="$PPM/install"
 
 software="php7.3 php7.3-zip php7.3-xml php7.3-readline php7.3-opcache php7.3-mysql 
@@ -17,17 +16,6 @@ software="php7.3 php7.3-zip php7.3-xml php7.3-readline php7.3-opcache php7.3-mys
           apache2 git curl unzip sudo"
 
 
-# Defining password-gen function
-gen_pass() {
-    MATRIX='0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
-    LENGTH=10
-    while [ ${n:=1} -le $LENGTH ]; do
-        PASS="$PASS${MATRIX:$(($RANDOM%${#MATRIX})):1}"
-        let n+=1
-    done
-    echo "$PASS"
-}
-
 # Defning return code check function
 check_result() {
     if [ $1 -ne 0 ]; then
@@ -35,7 +23,6 @@ check_result() {
         exit $1
     fi
 }
-
 
 
 #----------------------------------------------------------#
