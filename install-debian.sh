@@ -185,7 +185,7 @@ done
     sudo -u ppm app/console doctrine:schema:create
 
     # Configuring Workers service
-    cp -a $ppminstall/services/ppm-workers.service /etc/systemd/system/ppm-workers.service
+    cp -a $ppminstall/service/ppm-workers.service /etc/systemd/system/ppm-workers.service
     systemctl enable ppm-workers.service
     systemctl start ppm-workers.service
 
@@ -194,17 +194,11 @@ done
 #              Private Packages Manager Info               #
 #----------------------------------------------------------#
 
-# Comparing hostname and ip
-host_ip=$(host $servername| head -n 1 | awk '{print $NF}')
-if [ "$host_ip" = "$ip" ]; then
-    ip="$servername"
-fi
-
 # Show notification
 echo -e "Congratulations, you have just successfully installed \
 Private Packages Manager
 
-    https://$ip
+    --> 
 
 
 We hope that you enjoy your installation of PPM. Please \
