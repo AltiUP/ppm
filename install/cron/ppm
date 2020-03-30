@@ -1,0 +1,13 @@
+# Using this cron file requires an additional user on your system, please see install docs.
+
+# Start Packagist
+* * * * * ppm /opt/ppm/app/console packagist:update --no-debug --env=prod
+* * * * * ppm /opt/ppm/app/console packagist:dump --force --no-debug --env=prod
+* * * * * ppm /opt/ppm/app/console packagist:index --no-debug --env=prod
+0 2 * * * ppm /opt/ppm/app/console packagist:stats:compile --no-debug --env=prod
+# End Packagist
+
+# Start Satis
+# use the custom script(next line) instead, which automagiclly pulls the packagist packages in
+*/5 * * * * root /opt/ppm/app/satis/bin/update-satis
+# End Satis
