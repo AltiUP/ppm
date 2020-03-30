@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Vesta Debian installer v.05
+# Private Packages Manager
 
 #----------------------------------------------------------#
 #                  Variables&Functions                     #
@@ -10,7 +10,7 @@ export DEBIAN_FRONTEND=noninteractive
 RHOST='apt.vestacp.com'
 CHOST='c.vestacp.com'
 VERSION='debian'
-VESTA='/usr/local/vesta'
+PPM='/opt/ppm'
 memory=$(grep 'MemTotal' /proc/meminfo |tr ' ' '\n' |grep [0-9])
 arch=$(uname -i)
 os='debian'
