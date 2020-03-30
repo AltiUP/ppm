@@ -8,6 +8,5 @@
 # End Packagist
 
 # Start Satis
-# use the custom script(next line) instead, which automagiclly pulls the packagist packages in
 */5 * * * * root /opt/ppm/app/satis/bin/update-satis
 # End Satis
