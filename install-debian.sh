@@ -124,7 +124,6 @@ sleep 5
 #----------------------------------------------------------#
 
     cp $ppminstall/apache2/ppm.conf /etc/apache2/sites-available/ppm.conf
-    chown root:root /etc/apache2/sites-available/ppm.conf
     a2ensite ppm.conf
     a2enmod rewrite
     a2enmod headers
@@ -140,7 +139,6 @@ sleep 5
 #----------------------------------------------------------#
 
     cp $ppminstall/php-fpm/ppm.conf /etc/php/7.3/fpm/pool.d/ppm.conf
-    chown root:root /etc/php/7.3/fpm/pool.d/ppm.conf
     service php7.3-fpm start
     check_result $? "php-fpm start failed"
 
@@ -190,13 +188,11 @@ sleep 5
 
     # Configuring Workers service
     cp $ppminstall/service/ppm-workers.service /etc/systemd/system/ppm-workers.service
-    chown root:root /etc/systemd/system/ppm-workers.service
     systemctl enable ppm-workers.service
     systemctl start ppm-workers.service
 
     # Configure Cron
     cp $ppminstall/cron/ppm /etc/cron.d/ppm
-    chown root:root /etc/cron.d/ppm
 
     # Restart services
     service apache2 restart
