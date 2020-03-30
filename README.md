@@ -207,3 +207,6 @@ Restart=on-failure
 WantedBy=multi-user.target
 ```
 
+`systemctl enable ppm-workers.service`
+
+`systemctl start ppm-workers.service`
