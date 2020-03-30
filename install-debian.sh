@@ -123,7 +123,7 @@ check_result $? "apt-get install failed"
 #                    Configure Apache                      #
 #----------------------------------------------------------#
 
-    cp -a $ppminstall/apache2/ppm.conf /etc/apache2/site-available/ppm.conf
+    cp -a $ppminstall/apache2/ppm.conf /etc/apache2/sites-available/ppm.conf
     a2ensite ppm.conf
     a2enmod rewrite
     a2enmod headers
