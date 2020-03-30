@@ -170,8 +170,8 @@ env[PATH] = /usr/local/bin:/usr/bin:/bin
 
 `cd /opt/ppm`
 
-`composer install`
+`sudo -u ppm composer install`
 
 # Creation des tables
 
-`app/console doctrine:schema:create`
+`sudo -u ppm app/console doctrine:schema:create`
