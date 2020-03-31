@@ -1,3 +1,7 @@
-install-job-1:
-    script:
-        - apt-get update && apt-get install -y wget
+terminal:
+  before_script:
+    - apt-get update
+  script: sleep 60
+  variables:
+    RAILS_ENV: "test"
+    NODE_ENV: "test"
