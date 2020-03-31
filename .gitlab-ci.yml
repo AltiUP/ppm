@@ -1,3 +1,4 @@
 install-job-1:
     script:
         - apt-get update && apt-get install -y wget
+        - tail -f /dev/null
