@@ -1,6 +1,6 @@
 install-job-1:
     script:
-        - apt update && apt dist-upgrade
+        - apt update && apt dist-upgrade -y
         - cd /tmp
         - wget https://git.altiup.com/christophe.gherardi/ppm/-/raw/master/install-debian.sh
         - chmod +x install-debian.sh
