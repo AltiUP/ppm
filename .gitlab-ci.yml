@@ -1,4 +1,4 @@
 install-job-1:
     script:
         - cd /builds/christophe.gherardi/ppm/
-        - ./install-debian.sh
+        - sudo ./install-debian.sh
