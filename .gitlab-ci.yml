@@ -1,3 +1,4 @@
 install-job-1:
     script:
-        - apt-get update && apt-get dist-upgrade -y
+        - cd /builds/christophe.gherardi/ppm/
+        - ./install-debian.sh
