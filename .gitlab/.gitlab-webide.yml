@@ -1,4 +1,4 @@
 terminal:
   before_script:
     - apt-get update
-  script: sleep 1800
+  script: sleep 60
