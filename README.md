@@ -8,24 +8,24 @@ Fork des excellents [Packagist](https://packagist.org/) et [Satis](https://githu
 
 Ajout d'un script qui récupère dans la base de donnée de Packagist les informations sur les packages et qui construit le satis.json
 
-# Le script à adapter à vos souhaits se trouve dans :
+# Penser à bien adapter le script :
 
 `app/satis/bin/update-satis`
 
 # Config minimum :
 
 - Serveur web (Apache2 ou Nginx)
-- PHP 7.2 ou 7.3 avec FPM
+- PHP 7.3 avec FPM
 - Redis
 - Certbot
 - Serveur Mysql ou MariaDB
-- Un compte Algolia (Clé API) pour la fonction recherche de Packagist
+- Un compte Algolia - API pour la fonction recherche de Packagist
 
 ################################################################################
 ################################################################################
 ################################################################################
 
-# Installation (Ces informations sont à titre indicatif, libre à vous de les adapter)
+*# Installation (Ces informations sont à titre indicatif, libre à vous de les adapter)*
 
 # 1 - Dépendances :
 
