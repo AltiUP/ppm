@@ -1,5 +1,5 @@
 menu:
-    about_packagist: À propos de Packages
+    about_packagist: À propos de PPM
     rss_feeds: Flux Atom/RSS
     about_composer: À propos de Composer
     home: Accueil
@@ -37,13 +37,13 @@ link_type:
     provide: Provides
 
 listing:
-    title: Packages
+    title: PPM
     nopackages: Aucun package trouvé.
     viewall: Tout voir
     no_security_advisories: No security advisories found for this package.
 
 explore:
-    title: Packages
+    title: PPM
     newreleases: Nouvelles versions
     newpackages: Nouveaux packages
     popularpackages: Packages populaires
@@ -163,8 +163,8 @@ user:
     packages: "%username%'s packages"
 
 'Search packages...': 'Rechercher packages...'
-brandname: Packages
-navclaim: AltiUP Packages Repository
+brandname: PPM
+navclaim: PPM - Private Packages Manager
 Sort: 'Sort'
 Order: 'Order'
 Username: 'Username'
