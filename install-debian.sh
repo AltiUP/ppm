@@ -123,8 +123,6 @@ sleep 5
 #                    Configure Apache                      #
 #----------------------------------------------------------#
 
-    cp $ppminstall/apache2/ppm.conf /etc/apache2/sites-available/ppm.conf
-    a2ensite ppm.conf
     a2enmod rewrite
     a2enmod headers
     a2enmod proxy
@@ -132,15 +130,6 @@ sleep 5
     a2enconf php7.3-fpm
     service apache2 start
     check_result $? "apache2 start failed"
-
-
-#----------------------------------------------------------#
-#                     Configure PHP-FPM                    #
-#----------------------------------------------------------#
-
-    cp $ppminstall/php-fpm/ppm.conf /etc/php/7.3/fpm/pool.d/ppm.conf
-    service php7.3-fpm start
-    check_result $? "php-fpm start failed"
 
 
 #----------------------------------------------------------#
@@ -158,24 +147,6 @@ sleep 5
 
 
 #----------------------------------------------------------#
-#                  Configure MySQL/MariaDB                 #
-#----------------------------------------------------------#
-
-    service mysql start
-    check_result $? "mysql start failed"
-
-    # Securing MySQL installation
-    mysql -e "DROP DATABASE test" >/dev/null 2>&1
-
-    # Create database
-    mysql -u root -e "CREATE DATABASE ppm;"
-    mysql -u root -e "CREATE DATABASE ppm_test;"
-    mysql -u root -e "GRANT ALL PRIVILEGES ON ppm.* TO 'ppm'@'localhost' IDENTIFIED BY 'test';"
-    mysql -u root -e "GRANT ALL PRIVILEGES ON ppm_test.* TO 'ppm'@'localhost';"
-    mysql -u root -e "FLUSH PRIVILEGES;"
-
-
-#----------------------------------------------------------#
 #                     Configure PPM                        #
 #----------------------------------------------------------#
 
@@ -185,18 +156,6 @@ sleep 5
     sudo -u ppm app/console doctrine:schema:create
     sudo -u ppm app/console cache:clear --env=prod
     cd ~
-
-    # Configuring Workers service
-    cp $ppminstall/service/ppm-workers.service /etc/systemd/system/ppm-workers.service
-    systemctl enable ppm-workers.service
-    systemctl start ppm-workers.service
-
-    # Configure Cron
-    cp $ppminstall/cron/ppm /etc/cron.d/ppm
-
-    # Restart services
-    service apache2 restart
-    service php7.3-fpm restart
 
 
 #----------------------------------------------------------#
