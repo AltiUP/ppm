@@ -279,7 +279,6 @@ Créer un travail cron dans /etc/cron.d
 # End Packagist
 
 # Start Satis
-# A activer seulement après avoir ajouté vos premiers packages dans PPM
 */5 * * * * root /opt/ppm/app/satis/bin/update-satis >> /dev/null 2>&1
 # End Satis
 ```
