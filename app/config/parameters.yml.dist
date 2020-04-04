@@ -15,7 +15,7 @@ parameters:
     mailer_encryption: tls
     mailer_auth_mode: login
 
-    # packagist_host: example.org
+    packagist_host: example.tld
     # router.request_context.host: '%packagist_host%'
     # router.request_context.scheme: https
 
