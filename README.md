@@ -30,7 +30,7 @@ les informations sur les packages et qui construit le satis.json
 ################################################################################
 
 # Installation
-**(Ces informations sont à titre indicatif, libre à vous de les adapter)**
+**(Ces informations sont données à titre indicatif, libre à vous de les adapter)**
 
 # 1 - Dépendances :
 
