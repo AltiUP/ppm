@@ -34,6 +34,7 @@ twig:
     globals:
         google_analytics: '%google_analytics%'
         packagist_host: '%packagist_host%'
+        contact_mail_address: '%contact_mail_address%'
         algolia:
           app_id: '%algolia.app_id%'
           search_key: '%algolia.search_key%'
