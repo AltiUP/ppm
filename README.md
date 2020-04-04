@@ -26,6 +26,16 @@ les informations sur les packages et qui construit le satis.json
 - Un compte Algolia - API pour la fonction recherche de Packagist
 
 ################################################################################
+
+# Quelques commandes en vrac :
+
+Ajouter un utilisateur au groupe admin (ROLE_ADMIN) :
+`app/console fos:user:promote`
+
+Vider le cache :
+`app/console cache:clear --env=prod`
+
+################################################################################
 ################################################################################
 ################################################################################
 
