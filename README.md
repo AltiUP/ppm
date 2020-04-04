@@ -1,6 +1,8 @@
 # Private Package Manager
 
-Fork de l'excellent Packagist couplé à Satis
+Fork des excellents Packagist et Satis.
+
+Ajout d'un script qui récupère dans la base de donnée de Packagist les informations sur les packages et qui construit le satis.json
 
 ################################################################################
 
