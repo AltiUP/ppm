@@ -14,7 +14,7 @@ de gestion de packages.
 Ajout d'un script qui récupère dans la base de donnée de Packagist 
 les informations sur les packages et qui construit le satis.json
 
-# Penser à bien adapter le script :
+# Penser à bien adapter le script si vous utiliser d'autres version de php que la 7.3 :
 
 `app/satis/bin/update-satis`
 
