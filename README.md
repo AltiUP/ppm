@@ -1,10 +1,10 @@
-**# Private Package Manager**
+# Private Package Manager
 
 Fork des excellents [Packagist](https://packagist.org/) et [Satis](https://github.com/composer/satis) afin d'avoir un système privé de gestion de packages.
 
 ################################################################################
 
-**# Principe général :**
+# Principe général :
 
 Ajout d'un script qui récupère dans la base de donnée de Packagist les informations sur les packages et qui construit le satis.json
 
