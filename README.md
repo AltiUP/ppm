@@ -2,15 +2,24 @@
 
 Fork des excellents [Packagist](https://packagist.org/) et [Satis](https://github.com/composer/satis) afin d'avoir un système privé de gestion de packages.
 
+################################################################################
 
 # Principe général :
 
 Ajout d'un script qui récupère dans la base de donnée de Packagist les informations sur les packages et qui construit le satis.json
 
-# Le script à adapter à vos souhaits se trouve ici :
+# Le script à adapter à vos souhaits se trouve dans :
 
-app/satis/bin/update-satis
+`app/satis/bin/update-satis`
 
+# Config minimum :
+
+- Serveur web (Apache2 ou Nginx)
+- PHP 7.2 ou 7.3 avec FPM
+- Serveur Mysql ou MariaDB
+
+################################################################################
+################################################################################
 ################################################################################
 
 # Installation (Ces informations sont à titre indicatif, libre à vous de les adapter)
@@ -19,7 +28,7 @@ app/satis/bin/update-satis
 
 # Packages
 ```
-`php7.3 php7.3-zip php7.3-xml php7.3-readline php7.3-opcache php7.3-mysql php7.3-mbstring
+php7.3 php7.3-zip php7.3-xml php7.3-readline php7.3-opcache php7.3-mysql php7.3-mbstring
 php7.3-json php7.3-gd php7.3-fpm php7.3-curl php7.3-common php7.3-cli php-cli php7.3-apc
 php-mbstring mariadb-server
 ```
@@ -28,7 +37,7 @@ redis-server
 apache2
 git
 curl
-unzip`
+unzip
 ```
 
 # Composer
@@ -40,7 +49,7 @@ unzip`
 
 `php composer-setup.php --install-dir=/usr/local/bin --filename=composer`
 
-# 2 - Téléchargement du dépôt :
+# 2 - Clone du dépôt :
 
 `cd /opt`
 
