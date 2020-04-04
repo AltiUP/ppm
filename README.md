@@ -1,14 +1,19 @@
 # Private Package Manager
 
-Fork des excellents Packagist et Satis.
+Fork des excellents [Packagist](https://packagist.org/) et [Satis](https://github.com/composer/satis) afin d'avoir un système privé de gestion de packages.
+
 
 # Principe général :
 
 Ajout d'un script qui récupère dans la base de donnée de Packagist les informations sur les packages et qui construit le satis.json
 
+# Le script à adapter à vos souhaits se trouve ici :
+
+app/satis/bin/update-satis
+
 ################################################################################
 
-# Installation
+# Installation (Ces informations sont à titre indicatif, libre à vous de les adapter)
 
 # 1 - Dépendances :
 
@@ -39,9 +44,9 @@ unzip`
 
 `cd /opt`
 
-`git clone https://`
+`git clone https://github.com/AltiUP/ppm.git`
 
-# 3 - Creation d'un l'utilisateur spécifique
+# 3 - Creation d'un l'utilisateur spécifique pour PPM
 
 `useradd ppm -d /opt/ppm -M -r`
 
@@ -229,7 +234,6 @@ WantedBy=multi-user.target
 
 # 6 - Tache cron :
 
-# Pour l'utilisateur PPM
 
 Créer un travail cron dans /etc/cron.d
 
