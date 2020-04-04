@@ -1,4 +1,4 @@
-# Private Package Manager
+# Private Packages Manager
 
 Fork des excellents [Packagist](https://packagist.org/)
 et
