@@ -25,6 +25,9 @@ les informations sur les packages et qui construit le satis.json
 - Serveur Mysql ou MariaDB
 - Un compte Algolia - API pour la fonction recherche de Packagist
 
+# Todo :
+* [ Faire fonctionner les stats ]  
+
 ################################################################################
 
 # Quelques commandes en vrac :
