@@ -4,7 +4,7 @@ Fork des excellents [Packagist](https://packagist.org/) et [Satis](https://githu
 
 ################################################################################
 
-# Principe général :
+**Principe général :**
 
 Ajout d'un script qui récupère dans la base de donnée de Packagist les informations sur les packages et qui construit le satis.json
 
@@ -25,7 +25,7 @@ Ajout d'un script qui récupère dans la base de donnée de Packagist les inform
 ################################################################################
 ################################################################################
 
-*# Installation (Ces informations sont à titre indicatif, libre à vous de les adapter)*
+# Installation (Ces informations sont à titre indicatif, libre à vous de les adapter)
 
 # 1 - Dépendances :
 
