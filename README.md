@@ -22,7 +22,7 @@ les informations sur les packages et qui construit le satis.json
 - Redis
 - Certbot
 - Serveur Mysql ou MariaDB
-- Un compte Algolia - API pour la fonction recherche de Packagist
+- Un compte Algolia (API pour la fonction recherche de Packagist)
 
 # Todo :
 
