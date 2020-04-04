@@ -105,7 +105,7 @@ sleep 5
 #----------------------------------------------------------#
 
     # Clone repository
-    git clone https://git.altiup.com/christophe.gherardi/ppm.git /opt/ppm
+    git clone https://github.com/AltiUP/ppm.git /opt/ppm
 
     # Add user and group
     useradd ppm -d /opt/ppm -M -r
