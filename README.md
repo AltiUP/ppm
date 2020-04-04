@@ -14,9 +14,6 @@ de gestion de packages.
 Ajout d'un script qui récupère dans la base de donnée de Packagist 
 les informations sur les packages et qui construit le satis.json
 
-# Penser à bien adapter le script si vous utiliser d'autres version de php que la 7.3 :
-
-`app/satis/bin/update-satis`
 
 # Config minimum :
 
@@ -42,6 +39,11 @@ Ajouter un utilisateur au groupe admin (ROLE_ADMIN) :
 Vider le cache :
 
 `app/console cache:clear --env=prod`
+
+# Script de mise à jour Satis à adapter à vos besoins :
+
+`app/satis/bin/update-satis`
+
 
 ################################################################################
 ################################################################################
