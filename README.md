@@ -12,13 +12,19 @@ Ajout d'un script qui récupère dans la base de donnée de Packagist les inform
 
 # 1 - Dépendances :
 
-# PHP
-`php7.3 php7.3-zip php7.3-xml php7.3-readline php7.3-opcache php7.3-mysql php7.3-mbstring php7.3-json php7.3-gd php7.3-fpm php7.3-curl php7.3-common php7.3-cli php-cli php7.3-apc php-mbstring mariadb-server
+# Packages
+```
+`php7.3 php7.3-zip php7.3-xml php7.3-readline php7.3-opcache php7.3-mysql php7.3-mbstring
+php7.3-json php7.3-gd php7.3-fpm php7.3-curl php7.3-common php7.3-cli php-cli php7.3-apc
+php-mbstring mariadb-server
+```
+```
 redis-server
 apache2
 git
 curl
 unzip`
+```
 
 # Composer
 `curl -sS https://getcomposer.org/installer -o composer-setup.php`
@@ -35,7 +41,7 @@ unzip`
 
 `git clone https://`
 
-# 3 - Creation de l'utilisateur
+# 3 - Creation d'un l'utilisateur spécifique
 
 `useradd ppm -d /opt/ppm -M -r`
 
@@ -45,7 +51,7 @@ unzip`
 
 # 4 - Serveur web + php :
 
-# PHP-FPM
+# PHP-FPM avec utilisateur spécifique
 `nano /etc/php/7.3/fpm/pool.d/ppm.conf`
 
 ```
@@ -78,7 +84,7 @@ env[PATH] = /usr/local/bin:/usr/bin:/bin
 
 `systemctl restart php7.3-fpm`
 
-# Apache2
+# Exemple conf Apache2
 
 `nano /etc/apache2/sites-available/ppm.conf`
 
@@ -150,6 +156,7 @@ env[PATH] = /usr/local/bin:/usr/bin:/bin
 
 </VirtualHost>
 ```
+# Activer les modules Apache2
 
 `a2ensite ppm.conf`
 
@@ -191,7 +198,7 @@ env[PATH] = /usr/local/bin:/usr/bin:/bin
 
 `sudo -u ppm app/console doctrine:schema:create`
 
-# Création du service Workers
+# Création d'un service SystemD pour le Workers
 
 `nano /etc/systemd/system/ppm-workers.service`
 
@@ -224,21 +231,22 @@ WantedBy=multi-user.target
 
 # Pour l'utilisateur PPM
 
+Créer un travail cron dans /etc/cron.d
+
 ```
+# Using this cron file requires an additional user on your system, please see install docs.
+
 # Start Packagist
-* * * * * /opt/ppm/app/console packagist:update --no-debug --env=prod
-* * * * * /opt/ppm/app/console packagist:dump --force --no-debug --env=prod
-* * * * * /opt/ppm/app/console packagist:index --no-debug --env=prod
-0 2 * * * /opt/ppm/app/console packagist:stats:compile --no-debug --env=prod
+* * * * * ppm /opt/ppm/app/console packagist:update --no-debug --env=prod
+* * * * * ppm /opt/ppm/app/console packagist:dump --no-debug --env=prod
+* * * * * ppm /opt/ppm/app/console packagist:index --no-debug --env=prod
+0 2 * * * ppm /opt/ppm/app/console packagist:stats:compile --no-debug --env=prod
 # End Packagist
-```
 
-# Pour l'utilisateur root
-
-```
 # Start Satis
-*/5 * * * * /opt/ppm/app/satis/bin/update-satis
+*/5 * * * * root /opt/ppm/app/satis/bin/update-satis
 # End Satis
 ```
+
 
 ################################################################################
