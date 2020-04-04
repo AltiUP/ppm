@@ -16,7 +16,10 @@ Ajout d'un script qui récupère dans la base de donnée de Packagist les inform
 
 - Serveur web (Apache2 ou Nginx)
 - PHP 7.2 ou 7.3 avec FPM
+- Redis
+- Certbot
 - Serveur Mysql ou MariaDB
+- Un compte Algolia (Clé API) pour la fonction recherche de Packagist
 
 ################################################################################
 ################################################################################
@@ -186,7 +189,7 @@ env[PATH] = /usr/local/bin:/usr/bin:/bin
 
 `systemctl restart apache2`
 
-# MariaDB
+# Base de données
 
 `mysql -u root`
 
