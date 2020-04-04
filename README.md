@@ -36,9 +36,11 @@ les informations sur les packages et qui construit le satis.json
 # Quelques commandes en vrac :
 
 Ajouter un utilisateur au groupe admin (ROLE_ADMIN) :
+
 `app/console fos:user:promote`
 
 Vider le cache :
+
 `app/console cache:clear --env=prod`
 
 ################################################################################
@@ -198,13 +200,7 @@ env[PATH] = /usr/local/bin:/usr/bin:/bin
 
 `a2ensite ppm.conf`
 
-`a2enmod rewrite`
-
-`a2enmod headers`
-
-`a2enmod proxy`
-
-`a2enmod proxy_fcgi`
+`a2enmod rewrite headers proxy proxy_fcgi`
 
 `a2enconf php7.3-fpm`
 
@@ -232,9 +228,11 @@ env[PATH] = /usr/local/bin:/usr/bin:/bin
 
 `sudo -u ppm composer install`
 
-# Creation des tables
+# Creation des tables et nettoyage du cache
 
 `sudo -u ppm app/console doctrine:schema:create`
+
+`sudo -u ppm app/console cache:clear --env=prod`
 
 # Création d'un service SystemD pour le Workers
 
@@ -281,7 +279,8 @@ Créer un travail cron dans /etc/cron.d
 # End Packagist
 
 # Start Satis
-*/5 * * * * root /opt/ppm/app/satis/bin/update-satis
+# A activer seulement après avoir ajouté vos premiers packages dans PPM
+*/5 * * * * root /opt/ppm/app/satis/bin/update-satis >> /dev/null 2>&1
 # End Satis
 ```
 
