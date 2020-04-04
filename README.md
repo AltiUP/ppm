@@ -26,7 +26,8 @@ les informations sur les packages et qui construit le satis.json
 - Un compte Algolia - API pour la fonction recherche de Packagist
 
 # Todo :
-* [ Faire fonctionner les stats ]  
+
+* [ ] Faire fonctionner les stats   
 
 ################################################################################
 
