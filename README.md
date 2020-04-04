@@ -27,7 +27,7 @@ les informations sur les packages et qui construit le satis.json
 
 # Todo :
 
-* [ ] Faire fonctionner les stats   
+* [ ] Faire fonctionner les stats
 
 ################################################################################
 
