@@ -8,5 +8,5 @@
 # End Packagist
 
 # Start Satis
-*/5 * * * * root /opt/ppm/app/satis/bin/update-satis
+*/5 * * * * root /opt/ppm/app/satis/bin/update-satis >> /dev/null 2>&1
 # End Satis
