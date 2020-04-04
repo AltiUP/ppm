@@ -5,6 +5,8 @@ et
 [Satis](https://github.com/composer/satis) afin d'avoir un système privé
 de gestion de packages.
 
+![Image description](https://altiup.com/sites/default/files/img/ppm.png)
+
 ################################################################################
 
 **Principe général :**
