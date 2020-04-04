@@ -123,10 +123,7 @@ sleep 5
 #                    Configure Apache                      #
 #----------------------------------------------------------#
 
-    a2enmod rewrite
-    a2enmod headers
-    a2enmod proxy
-    a2enmod proxy_fcgi
+    a2enmod rewrite headers proxy proxy_fcgi
     a2enconf php7.3-fpm
     service apache2 start
     check_result $? "apache2 start failed"
