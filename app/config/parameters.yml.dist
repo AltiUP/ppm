@@ -14,6 +14,7 @@ parameters:
     mailer_from_name: Private Package Manager
     mailer_encryption: tls
     mailer_auth_mode: login
+    contact_mail_address: ppm@exemple.tld
 
     packagist_host: example.tld
     # router.request_context.host: '%packagist_host%'
