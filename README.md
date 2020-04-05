@@ -226,6 +226,14 @@ env[PATH] = /usr/local/bin:/usr/bin:/bin
 
 # Installation des dépendances
 
+Pour Satis :
+
+`cd /opt/ppm/app/satis`
+
+`sudo -u ppm composer install`
+
+Pour Packagist :
+
 `cd /opt/ppm`
 
 `sudo -u ppm composer install`
