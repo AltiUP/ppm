@@ -1,11 +1,19 @@
 #!/bin/bash
 
-REPOSITORY=`mysql --skip-column-names -u root -e "SET group_concat_max_len = 9046;SELECT CAST(GROUP_CONCAT(CONCAT('{ \"type\": \"vcs\", \"url\": \"', package.repository, '\" }') SEPARATOR ',') AS CHAR) AS packages FROM package ORDER BY package.repository ASC" ppm`
-PACKAGES=`mysql --skip-column-names -u root -e "SET group_concat_max_len = 9046;SELECT CAST(GROUP_CONCAT(CONCAT('\"', package.name, '\":\"*\"') SEPARATOR ',') AS CHAR) AS packages FROM package ORDER BY package.name ASC" ppm`
+##
+# Recuperer info sur les packages dans la base de donnees
+##
+
+REPOSITORY=`mysql --skip-column-names -u root -e "SET group_concat_max_len = 9046;SELECT CAST(GROUP_CONCAT(CONCAT('{ \"type\": \"vcs\", \"url\": \"', package.repository, '\" }') SEPARATOR ',') AS CHAR) AS $
+PACKAGES=`mysql --skip-column-names -u root -e "SET group_concat_max_len = 9046;SELECT CAST(GROUP_CONCAT(CONCAT('\"', package.name, '\":\"*\"') SEPARATOR ',') AS CHAR) AS packages FROM package ORDER BY pac$
+
+##
+# Creation du fichier satis.json
+##
 
 SATIS=$(cat <<EOF
 {
-    "name": "Private Package Manager",
+    "name": "Private Packages Manager",
     "homepage": "https://ppm.exemple.tld",
     "repositories": [
         $REPOSITORY
@@ -27,4 +35,9 @@ EOF
 
 echo $SATIS > /opt/ppm/app/satis/satis.json
 
+##
+# On demande a Satis de creer le packages.json definitif 
+##
+
 sudo -u ppm /usr/bin/php7.3 /opt/ppm/app/satis/bin/satis -n -q build /opt/ppm/app/satis/satis.json /opt/ppm/web/satis
+
