@@ -271,7 +271,7 @@ WantedBy=multi-user.target
 Créer un travail cron dans /etc/cron.d
 
 ```
-# Using this cron file requires an additional user on your system, please see install docs.
+# Using this cron file requires an additional user on your system.
 
 # Start Packagist
 * * * * * ppm /opt/ppm/app/console packagist:update --no-debug --env=prod
