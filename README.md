@@ -236,7 +236,7 @@ Pour Packagist :
 
 `sudo -u ppm app/console cache:clear --env=prod`
 
-# Création d'un service SystemD pour le Workers
+# Création d'un service Systemd pour le Workers
 
 `nano /etc/systemd/system/ppm-workers.service`
 
