@@ -2,7 +2,6 @@
 
 # Start Packagist
 * * * * * ppm /opt/ppm/app/console packagist:update --no-debug --env=prod
-* * * * * ppm /opt/ppm/app/console packagist:dump --no-debug --env=prod
 * * * * * ppm /opt/ppm/app/console packagist:index --no-debug --env=prod
 0 2 * * * ppm /opt/ppm/app/console packagist:stats:compile --no-debug --env=prod
 # End Packagist
