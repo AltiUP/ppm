@@ -147,21 +147,11 @@ env[PATH] = /usr/local/bin:/usr/bin:/bin
                 Require all granted
         </Directory>
 
-        <Directory /opt/ppm/web/satis>
-                Options -Indexes
-                AllowOverride All
-                Require all granted
-        </Directory>
-
         # Needed aliases for satis
-        Alias /satis /opt/ppm/web/satis
-        Alias /include /opt/ppm/web/satis/include
-        Alias /dist /opt/ppm/web/satis/dist
+        Alias /include /opt/ppm/web/include
+        Alias /dist /opt/ppm/web/dist
  
         RewriteEngine on
-
-        # Push packages list to satis list to allow distribution files
-        RewriteRule ^/?(packages\.json)$ "/satis/$1" [R=301,L]
 
         # SSL
         #SSLEngine on
@@ -285,7 +275,6 @@ Créer un travail cron dans /etc/cron.d
 
 # Start Packagist
 * * * * * ppm /opt/ppm/app/console packagist:update --no-debug --env=prod
-* * * * * ppm /opt/ppm/app/console packagist:dump --no-debug --env=prod
 * * * * * ppm /opt/ppm/app/console packagist:index --no-debug --env=prod
 0 2 * * * ppm /opt/ppm/app/console packagist:stats:compile --no-debug --env=prod
 # End Packagist
