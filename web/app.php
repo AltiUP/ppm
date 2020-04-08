@@ -9,7 +9,7 @@ $loader = require __DIR__.'/../app/autoload.php';
 $kernel = new AppKernel('prod', false);
 
 if (PHP_VERSION_ID < 70100) {
-    if (in_array($_SERVER['REMOTE_ADDR'], ['10.10.150.105'], true)) {
+    if (in_array($_SERVER['REMOTE_ADDR'], ['127.0.0.1'], true)) {
         Request::setTrustedProxies([$_SERVER['REMOTE_ADDR']]);
         // force all trusted header names
         Request::setTrustedHeaderName(Request::HEADER_FORWARDED, '');
