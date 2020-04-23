@@ -228,6 +228,8 @@ Pour Packagist :
 
 `sudo -u ppm composer install`
 
+[A la fin de l'installation, bien penser à renseigner les variables, et surtout le trusted_hosts]
+
 # Creation des tables et nettoyage du cache
 
 `sudo -u ppm app/console doctrine:schema:create`
