@@ -118,11 +118,11 @@ class SymlinkDumper
      */
     private $statsd;
 
-     /**
+    /**
      * @var ProviderManager
      */
     private $providerManager;
-    
+
     /**
      * Constructor
      *
@@ -133,7 +133,7 @@ class SymlinkDumper
      * @param string                $targetDir
      * @param int                   $compress
      */
-     public function __construct(RegistryInterface $doctrine, Filesystem $filesystem, UrlGeneratorInterface $router, Client $redis, $webDir, $targetDir, $compress, $awsMetadata, StatsDClient $statsd, ProviderManager $providerManager)
+    public function __construct(RegistryInterface $doctrine, Filesystem $filesystem, UrlGeneratorInterface $router, Client $redis, $webDir, $targetDir, $compress, $awsMetadata, StatsDClient $statsd, ProviderManager $providerManager)
     {
         $this->doctrine = $doctrine;
         $this->fs = $filesystem;
@@ -160,8 +160,6 @@ class SymlinkDumper
         if (!MetadataDirCheck::isMetadataStoreMounted($this->awsMeta)) {
             throw new \RuntimeException('Metadata store not mounted, can not dump metadata');
         }
-
-        $cleanUpOldFiles = date('i') == 0;
 
         // prepare build dir
         $webDir = $this->webDir;
@@ -328,7 +326,6 @@ class SymlinkDumper
             if ($verbose) {
                 echo 'Preparing individual files listings'.PHP_EOL;
             }
-            $safeFiles = array();
             $individualHashedListings = array();
             $finder = Finder::create()->files()->ignoreVCS(true)->name('*.json')->in($buildDir)->depth('1');
 
@@ -347,7 +344,6 @@ class SymlinkDumper
                 $listing = $this->getTargetListing($file);
                 $hash = hash_file('sha256', $file);
                 $key = substr($key, 0, -5);
-                $safeFiles[] = $key.'$'.$hash.'.json';
                 $this->listings[$listing]['providers'][$key] = array('sha256' => $hash);
                 $individualHashedListings[$listing] = true;
             }
@@ -372,7 +368,6 @@ class SymlinkDumper
                 list($listingPath, $hash) = $this->dumpListing($buildDir.'/'.$listing);
                 $hashedListing = basename($listingPath);
                 $this->rootFile['provider-includes']['p/'.str_replace($hash, '%hash%', $hashedListing)] = array('sha256' => $hash);
-                $safeFiles[] = $hashedListing;
             }
 
             if ($verbose) {
@@ -465,15 +460,6 @@ class SymlinkDumper
             $this->copyWriteLog($buildDir, $oldBuildDir);
         }
 
-        // clean up old files once an hour
-        if (!$force && $cleanUpOldFiles) {
-            if ($verbose) {
-                echo 'Cleaning up old files'.PHP_EOL;
-            }
-
-            $this->cleanOldFiles($buildDir, $oldBuildDir, $safeFiles);
-        }
-
         if ($verbose) {
             echo 'Updating package dump times'.PHP_EOL;
         }
@@ -518,7 +504,6 @@ class SymlinkDumper
 
         $this->statsd->increment('packagist.metadata_dump');
 
-        // TODO when a package is deleted, it should be removed from provider files, or marked for removal at least
         return true;
     }
 
@@ -550,6 +535,51 @@ class SymlinkDumper
         }
     }
 
+    public function gc()
+    {
+        // clean up v2 files for deleted packages
+        if (is_dir($this->buildDir.'/p2')) {
+            $finder = Finder::create()->directories()->ignoreVCS(true)->in($this->buildDir.'/p2');
+            $packageNames = array_flip($this->providerManager->getPackageNames());
+
+            foreach ($finder as $vendorDir) {
+                foreach (glob(((string) $vendorDir).'/*.json') as $file) {
+                    if (!preg_match('{/([^/]+/[^/]+?)(~dev)?\.json$}', strtr($file, '\\', '/'), $match)) {
+                        throw new \LogicException('Could not match package name from '.$path);
+                    }
+
+                    if (!isset($packageNames[$match[1]])) {
+                        unlink((string) $file);
+                    }
+                }
+            }
+        }
+
+        // build up array of safe files
+        $safeFiles = [];
+
+        $rootFile = $this->webDir.'/packages.json';
+        if (!file_exists($rootFile) || !is_dir($this->buildDir.'/a')) {
+            return;
+        }
+        $rootJson = json_decode(file_get_contents($rootFile), true);
+        foreach ($rootJson['provider-includes'] as $listing => $opts) {
+            $listing = str_replace('%hash%', $opts['sha256'], $listing);
+            $safeFiles[basename($listing)] = true;
+
+            $listingJson = json_decode(file_get_contents($this->webDir.'/'.$listing), true);
+            foreach ($listingJson['providers'] as $pkg => $opts) {
+                $provPath = $pkg.'$'.$opts['sha256'].'.json';
+                $safeFiles[$provPath] = true;
+            }
+        }
+
+        $buildDirs = [realpath($this->buildDir.'/a'), realpath($this->buildDir.'/b')];
+        shuffle($buildDirs);
+
+        $this->cleanOldFiles($buildDirs[0], $buildDirs[1], $safeFiles);
+    }
+
     private function cleanOldFiles($buildDir, $oldBuildDir, $safeFiles)
     {
         $time = (time() - 86400) * 10000;
@@ -566,7 +596,7 @@ class SymlinkDumper
 
             foreach ($vendorFiles as $file) {
                 $key = strtr(str_replace($buildDir.DIRECTORY_SEPARATOR, '', $file), '\\', '/');
-                if (!in_array($key, $safeFiles, true)) {
+                if (!isset($safeFiles[$key])) {
                     unlink((string) $file);
                     if (file_exists($altDirFile = str_replace($buildDir, $oldBuildDir, (string) $file))) {
                         unlink($altDirFile);
@@ -579,7 +609,7 @@ class SymlinkDumper
         $finder = Finder::create()->depth(0)->files()->name('provider-*.json')->ignoreVCS(true)->in($buildDir)->date('until 10minutes ago');
         foreach ($finder as $provider) {
             $key = strtr(str_replace($buildDir.DIRECTORY_SEPARATOR, '', $provider), '\\', '/');
-            if (!in_array($key, $safeFiles, true)) {
+            if (!isset($safeFiles[$key])) {
                 $path = (string) $provider;
                 unlink($path);
                 if (file_exists($path.'.gz')) {
@@ -867,7 +897,12 @@ class SymlinkDumper
 
     private function writeV2File($path, $contents)
     {
-        if (file_exists($path) && file_get_contents($path) === $contents) {
+        if (
+            file_exists($path)
+            && file_get_contents($path) === $contents
+            // files dumped before then are susceptible to be out of sync, so force them all to be dumped once more at least
+            && filemtime($path) >= 1587654540
+        ) {
             return;
         }
 
