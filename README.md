@@ -188,7 +188,7 @@ env[PATH] = /usr/local/bin:/usr/bin:/bin
 
 </VirtualHost>
 ```
-# Activer les modules Apache2
+# Activer VirtualHost et modules Apache2
 
 `a2ensite ppm.conf`
 
