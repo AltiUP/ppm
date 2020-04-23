@@ -81,9 +81,7 @@ unzip
 
 `cd /opt`
 
-`git clone https://github.com/AltiUP/private-packages-manager.git`
-
-`mv private-packages-manager ppm`
+`git clone https://github.com/AltiUP/private-packages-manager.git ppm`
 
 # 3 - Creation d'un l'utilisateur spécifique pour PPM
 
