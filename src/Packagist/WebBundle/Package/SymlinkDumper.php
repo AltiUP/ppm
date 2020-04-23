@@ -19,6 +19,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Finder\Finder;
 use Packagist\WebBundle\Entity\Version;
 use Packagist\WebBundle\Entity\Package;
+use Packagist\WebBundle\Model\ProviderManager;
 use Doctrine\DBAL\Connection;
 use Packagist\WebBundle\HealthCheck\MetadataDirCheck;
 use Predis\Client;
@@ -117,6 +118,11 @@ class SymlinkDumper
      */
     private $statsd;
 
+     /**
+     * @var ProviderManager
+     */
+    private $providerManager;
+    
     /**
      * Constructor
      *
@@ -127,7 +133,7 @@ class SymlinkDumper
      * @param string                $targetDir
      * @param int                   $compress
      */
-    public function __construct(RegistryInterface $doctrine, Filesystem $filesystem, UrlGeneratorInterface $router, Client $redis, $webDir, $targetDir, $compress, $awsMetadata, StatsDClient $statsd)
+     public function __construct(RegistryInterface $doctrine, Filesystem $filesystem, UrlGeneratorInterface $router, Client $redis, $webDir, $targetDir, $compress, $awsMetadata, StatsDClient $statsd, ProviderManager $providerManager)
     {
         $this->doctrine = $doctrine;
         $this->fs = $filesystem;
@@ -139,6 +145,7 @@ class SymlinkDumper
         $this->redis = $redis;
         $this->awsMeta = $awsMetadata;
         $this->statsd = $statsd;
+        $this->providerManager = $providerManager;
     }
 
     /**
