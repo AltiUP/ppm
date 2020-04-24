@@ -216,8 +216,6 @@ env[PATH] = /usr/local/bin:/usr/bin:/bin
 
 `a2enmod rewrite headers proxy proxy_fcgi`
 
-`a2enconf php7.3-fpm`
-
 `systemctl restart apache2`
 
 # Base de données
