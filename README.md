@@ -268,7 +268,6 @@ Description=Workers PPM
 After=redis-server.service
 
 [Service]
-Type=simple
 User=ppm
 Group=ppm
 WorkingDirectory=/opt/ppm
@@ -277,7 +276,8 @@ SyslogIdentifier=ppm-workers
 ExecStart=/opt/ppm/app/console packagist:run-workers
 ExecStop=
 
-Restart=on-failure
+Restart=always
+RestartSec=120
 
 [Install]
 WantedBy=multi-user.target
