@@ -64,7 +64,6 @@ redis-server
 apache2
 git
 curl
-unzip
 ```
 
 # Composer
