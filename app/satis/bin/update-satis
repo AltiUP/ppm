@@ -4,8 +4,8 @@
 # Recuperer info sur les packages dans la base de donnees
 ##
 
-REPOSITORY=`mysql --skip-column-names -u root -e "SET group_concat_max_len = 9046;SELECT CAST(GROUP_CONCAT(CONCAT('{ \"type\": \"vcs\", \"url\": \"', package.repository, '\" }') SEPARATOR ',') AS CHAR) AS $
-PACKAGES=`mysql --skip-column-names -u root -e "SET group_concat_max_len = 9046;SELECT CAST(GROUP_CONCAT(CONCAT('\"', package.name, '\":\"*\"') SEPARATOR ',') AS CHAR) AS packages FROM package ORDER BY pac$
+REPOSITORY=`mysql --skip-column-names -u root -e "SET group_concat_max_len = 9046;SELECT CAST(GROUP_CONCAT(CONCAT('{ \"type\": \"vcs\", \"url\": \"', package.repository, '\" }') SEPARATOR ',') AS CHAR) AS packages FROM package ORDER BY package.repository ASC" ppm`
+PACKAGES=`mysql --skip-column-names -u root -e "SET group_concat_max_len = 9046;SELECT CAST(GROUP_CONCAT(CONCAT('\"', package.name, '\":\"*\"') SEPARATOR ',') AS CHAR) AS packages FROM package ORDER BY package.name ASC" ppm`
 
 ##
 # Creation du fichier satis.json
