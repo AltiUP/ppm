@@ -1,8 +1,7 @@
 # Private Packages Manager
 
-Fork des excellents [Packagist](https://packagist.org/)
-et
-[Satis](https://github.com/composer/satis) afin d'avoir un système privé
+Integration de Satis [Satis](https://github.com/composer/satis) dans Packagist [Packagist](https://packagist.org/)
+afin d'avoir un système privé
 de gestion de packages.
 
 ![Image description](https://altiup.com/sites/default/files/img/ppm.png)
