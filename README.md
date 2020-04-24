@@ -146,19 +146,19 @@ env[PATH] = /usr/local/bin:/usr/bin:/bin
             SetEnvIfNoCase ^Authorization$ "(.+)" HTTP_AUTHORIZATION=$1
          </IfModule>
 
-        <FilesMatch ".+\.ph(ar|p|tml)$">
-            SetHandler "proxy:unix:/run/php/php7.3-fpm-ppm.sock|fcgi://localhost"
-        </FilesMatch>
-        <FilesMatch ".+\.phps$">
+            <FilesMatch ".+\.ph(ar|p|tml)$">
+                SetHandler "proxy:unix:/run/php/php7.3-fpm-ppm.sock|fcgi://localhost"
+            </FilesMatch>
+            <FilesMatch ".+\.phps$">
         # Deny access to raw php sources by default
         # To re-enable it's recommended to enable access to the files
         # only in specific virtual host or directory
-            Require all denied
-        </FilesMatch>
+                Require all denied
+            </FilesMatch>
         # Deny access to files without filename (e.g. '.php')
-        <FilesMatch "^\.ph(ar|p|ps|tml)$">
-            Require all denied
-        </FilesMatch>
+            <FilesMatch "^\.ph(ar|p|ps|tml)$">
+                Require all denied
+            </FilesMatch>
         </IfModule>
         </IfModule>
 
