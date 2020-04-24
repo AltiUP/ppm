@@ -1,6 +1,6 @@
 # Private Packages Manager
 
-Integration de Satis [Satis](https://github.com/composer/satis) dans Packagist [Packagist](https://packagist.org/)
+Integration de [Satis](https://github.com/composer/satis) dans [Packagist](https://packagist.org/)
 afin d'avoir un système privé
 de gestion de packages.
 
