@@ -111,7 +111,7 @@ pm.max_children = 16
 pm.max_requests = 4000
 pm.process_idle_timeout = 10s
 
-php_admin_value[open_basedir] = /opt/packages:/bin:/usr/bin:/usr/local/bin:/tmp:/usr/share
+php_admin_value[open_basedir] = /opt/ppm:/bin:/usr/bin:/usr/local/bin:/tmp:/usr/share
 php_admin_value[upload_max_filesize] = 15M
 php_admin_value[max_execution_time] = 20
 php_admin_value[post_max_size] = 15M
