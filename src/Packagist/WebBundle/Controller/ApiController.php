@@ -43,9 +43,9 @@ class ApiController extends Controller
             return new Response(file_get_contents($rootJson));
         }
 
-        $this->get('logger')->alert('packages.json is missing and the fallback controller is being hit, you need to use app/console packagist:dump');
+        $this->get('logger')->alert('packages.json is missing and the fallback controller is being hit, you need to use ./app/satis/bin/update-satis');
 
-        return new Response('Horrible misconfiguration or the dumper script messed up, you need to use app/console packagist:dump', 404);
+        return new Response('Horrible misconfiguration or the dumper script messed up, you need to use ./app/satis/bin/update-satis', 404);
     }
 
     /**
