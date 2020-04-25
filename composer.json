@@ -37,7 +37,7 @@
         "sensio/framework-extra-bundle": "^5.0",
         "sensio/generator-bundle": "^3.0",
 
-        "composer/composer": "^1.10@dev",
+        "composer/composer": "1.10.x-dev",
         "friendsofsymfony/user-bundle": "^2.0",
         "hwi/oauth-bundle": "^0.6",
         "scheb/two-factor-bundle": "^4.7",
