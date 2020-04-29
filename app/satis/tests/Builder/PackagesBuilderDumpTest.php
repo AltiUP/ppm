@@ -97,6 +97,14 @@ class PackagesBuilderDumpTest extends TestCase
             }
 
             $lastIncludedJsonFile = $includeJsonFile;
+
+            $this->assertArrayHasKey('metadata-url', $packagesJson);
+            $packageName = key($arrayPackages);
+            foreach (['', '~dev'] as $suffix) {
+                $includeJson = str_replace('%package%', $packageName.$suffix, $packagesJson['metadata-url']);
+                $includeJsonFile = 'build/' . $includeJson;
+                $this->assertTrue(is_file(vfsStream::url($includeJsonFile)), $includeJsonFile.' file must be created');
+            }
         }
     }
 
