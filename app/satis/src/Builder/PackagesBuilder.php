@@ -16,6 +16,7 @@ namespace Composer\Satis\Builder;
 use Composer\Json\JsonFile;
 use Composer\Package\Dumper\ArrayDumper;
 use Composer\Package\PackageInterface;
+use Composer\Semver\VersionParser;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class PackagesBuilder extends Builder
@@ -46,6 +47,7 @@ class PackagesBuilder extends Builder
             $packagesByName[$package->getName()][$package->getPrettyVersion()] = $dumper->dump($package);
         }
 
+        // Composer 1.0 format
         $repo = ['packages' => []];
         if (isset($this->config['providers']) && $this->config['providers']) {
             $providersUrl = 'p/%package%$%hash%.json';
@@ -75,6 +77,38 @@ class PackagesBuilder extends Builder
             }
         } else {
             $repo['includes'] = $this->dumpPackageIncludeJson($packagesByName, $this->includeFileName);
+        }
+
+        // Composer 2.0 format
+        $metadataUrl = 'p2/%package%.json';
+        if (!empty($this->config['homepage'])) {
+            $repo['metadata-url'] = parse_url(rtrim($this->config['homepage'], '/'), PHP_URL_PATH) . '/' . $metadataUrl;
+        } else {
+            $repo['metadata-url'] = $metadataUrl;
+        }
+
+        foreach ($packagesByName as $packageName => $versionPackages) {
+            $stableVersions = [];
+            $devVersions = [];
+            foreach ($versionPackages as $version => $versionConfig) {
+                if ('dev' === VersionParser::parseStability($versionConfig['version'])) {
+                    $devVersions[] = $versionConfig;
+                } else {
+                    $stableVersions[] = $versionConfig;
+                }
+            }
+
+            // Stable versions
+            $this->dumpPackageIncludeJson(
+                [$packageName => $stableVersions],
+                str_replace('%package%', $packageName, $metadataUrl)
+            );
+
+            // Dev versions
+            $this->dumpPackageIncludeJson(
+                [$packageName => $devVersions],
+                str_replace('%package%', $packageName.'~dev', $metadataUrl)
+            );
         }
 
         $this->dumpPackagesJson($repo);
