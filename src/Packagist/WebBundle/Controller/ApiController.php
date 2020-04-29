@@ -43,9 +43,9 @@ class ApiController extends Controller
             return new Response(file_get_contents($rootJson));
         }
 
-        $this->get('logger')->alert('packages.json is missing and the fallback controller is being hit, you need to use ./app/satis/bin/update-satis');
+        $this->get('logger')->alert('packages.json is missing and the fallback controller is being hit, you need to use app/console packagist:dump');
 
-        return new Response('Horrible misconfiguration or the dumper script messed up, you need to use ./app/satis/bin/update-satis', 404);
+        return new Response('Horrible misconfiguration or the dumper script messed up, you need to use app/console packagist:dump', 404);
     }
 
     /**
@@ -237,6 +237,7 @@ class ApiController extends Controller
             $uaParser = new UserAgentParser($request->headers->get('User-Agent'));
             $this->get('Graze\DogStatsD\Client')->increment('installs', 1, 1, [
                 'composer' => $uaParser->getComposerVersion() ?: 'unknown',
+                'composer_major' => $uaParser->getComposerMajorVersion() ?: 'unknown',
                 'php_minor' => preg_replace('{^(\d+\.\d+).*}', '$1', $uaParser->getPhpVersion()) ?: 'unknown',
                 'php_patch' => $uaParser->getPhpVersion() ?: 'unknown',
                 'http' => $uaParser->getHttpVersion() ?: 'unknown',
