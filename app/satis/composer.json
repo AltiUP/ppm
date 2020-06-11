@@ -3,7 +3,7 @@
     "description": "Simple Repository Generator",
     "keywords": ["package", "repository", "generator", "static", "composer"],
     "homepage": "https://github.com/composer/satis",
-    "type": "library",
+    "type": "project",
     "license": "MIT",
     "authors": [{
         "name": "Jordi Boggiano",
@@ -27,7 +27,7 @@
     "bin": ["bin/satis"],
     "require": {
         "php": "^7.3||^8.0",
-        "composer/composer": "^1.9",
+        "composer/composer": "^1.10",
         "symfony/console": "^4.4||^5.0",
         "twig/twig": "^2.12||^3.0"
     },
@@ -38,7 +38,7 @@
         "ext-json": "*",
         "friendsofphp/php-cs-fixer": "^2.15",
         "mikey179/vfsstream": "^1.6.7",
-        "phpunit/phpunit": "^8.2||^9.0"
+        "phpunit/phpunit": "^9.1"
     },
     "autoload-dev": {
         "psr-4": { "Composer\\Satis\\": "tests" }
