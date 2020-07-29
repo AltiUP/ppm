@@ -122,6 +122,7 @@ class PackageController extends Controller
         }
         if ($since < $oldestSyncPoint) {
             return new JsonResponse(['actions' => ['type' => 'resync', 'time' => floor($now / 10000), 'package' => '*'], 'timestamp' => $now]);
+            return new JsonResponse(['actions' => [['type' => 'resync', 'time' => floor($now / 10000), 'package' => '*']], 'timestamp' => $now]);
         }
 
         // fetch changes from $since (inclusive) up to $now (non inclusive so -1)
